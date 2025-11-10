@@ -1,77 +1,443 @@
-import { useState } from "react";
-import { Card, Form, Button, ButtonGroup } from "react-bootstrap";
+import { useState, useEffect, useRef } from "react";
+import { Card, Button, ButtonGroup } from "react-bootstrap";
 
 function Timer() {
+  const [initialMinutes, setInitialMinutes] = useState(25);
   const [minutes, setMinutes] = useState(25);
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const intervalRef = useRef(null);
 
-  const handleStartStop = () => {
-    setIsRunning(!isRunning);
-    // TODO: Implement actual timer logic
+  const totalSeconds = initialMinutes * 60;
+  const currentSeconds = minutes * 60 + seconds;
+  const progressPercentage = (currentSeconds / totalSeconds) * 100;
+
+  // Custom color palette
+  const COLORS = {
+    blue: "#8CE4FF",
+    yellow: "#FEEE91",
+    orange: "#FFA239",
+    red: "#FF5656",
+  };
+
+  // Get color based on time remaining
+  const getTimerColor = () => {
+    if (progressPercentage > 75) return COLORS.blue;
+    if (progressPercentage > 50) return COLORS.yellow;
+    if (progressPercentage > 25) return COLORS.orange;
+    return COLORS.red;
+  };
+
+  useEffect(() => {
+    if (isRunning && currentSeconds > 0) {
+      intervalRef.current = setInterval(() => {
+        setSeconds((prevSeconds) => {
+          if (prevSeconds === 0) {
+            if (minutes === 0) {
+              setIsRunning(false);
+              setIsPaused(false);
+              // Timer finished
+              return 0;
+            }
+            setMinutes((prevMinutes) => prevMinutes - 1);
+            return 59;
+          }
+          return prevSeconds - 1;
+        });
+      }, 1000);
+    } else {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [isRunning, minutes, currentSeconds]);
+
+  const handleStart = () => {
+    setIsRunning(true);
+    setIsPaused(false);
+  };
+
+  const handlePause = () => {
+    setIsRunning(false);
+    setIsPaused(true);
   };
 
   const handleReset = () => {
     setIsRunning(false);
-    setMinutes(25);
+    setIsPaused(false);
+    setMinutes(initialMinutes);
     setSeconds(0);
   };
 
-  const handleMinutesChange = (e) => {
-    const value = parseInt(e.target.value) || 0;
-    setMinutes(Math.max(0, Math.min(60, value)));
+  const adjustTime = (amount) => {
+    if (!isRunning && !isPaused) {
+      const newMinutes = Math.max(1, Math.min(60, initialMinutes + amount));
+      setInitialMinutes(newMinutes);
+      setMinutes(newMinutes);
+      setSeconds(0);
+    }
   };
 
-  return (
-    <Card className="shadow-sm h-100">
-      <Card.Body>
-        <Card.Title className="text-center mb-4">
-          <h2>⏱️ Timer</h2>
-        </Card.Title>
+  // SVG circle properties
+  const size = 200;
+  const strokeWidth = 10;
+  const center = size / 2;
+  const radius = center - strokeWidth / 2;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset =
+    circumference - (progressPercentage / 100) * circumference;
 
-        <div className="text-center mb-4">
+  return (
+    <Card
+      className="compact-timer"
+      style={{
+        border: "none",
+        background: "white",
+        borderRadius: "20px",
+        boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
+      }}
+    >
+      <Card.Body className="p-4 d-flex flex-column align-items-center">
+        {/* Header */}
+        <div
+          className="text-center mb-4"
+          style={{
+            width: "100%",
+            padding: "8px 16px",
+            background: "#f5f5f5",
+            borderRadius: "12px",
+          }}
+        >
           <div
             style={{
-              fontSize: "5rem",
-              fontWeight: "bold",
-              color: "#0d6efd",
-              fontFamily: "monospace",
+              fontSize: "0.65rem",
+              fontWeight: "700",
+              color: "#666",
+              letterSpacing: "1.5px",
+              textTransform: "uppercase",
             }}
           >
-            {String(minutes).padStart(2, "0")}
-            <span style={{ opacity: 0.7 }}>:</span>
-            {String(seconds).padStart(2, "0")}
+            Focus Timer
           </div>
         </div>
 
-        <Form.Group className="mb-3">
-          <Form.Label>Set Minutes:</Form.Label>
-          <Form.Control
-            type="number"
-            min="0"
-            max="60"
-            value={minutes}
-            onChange={handleMinutesChange}
-            disabled={isRunning}
-          />
-        </Form.Group>
-
-        <ButtonGroup className="w-100 mb-3">
-          <Button
-            variant={isRunning ? "warning" : "success"}
-            onClick={handleStartStop}
-            size="lg"
+        {/* Circular Timer */}
+        <div
+          className="position-relative mb-4"
+          style={{ width: size, height: size }}
+        >
+          <svg
+            width={size}
+            height={size}
+            style={{ transform: "rotate(-90deg)" }}
           >
-            {isRunning ? "⏸️ Pause" : "▶️ Start"}
-          </Button>
-          <Button variant="secondary" onClick={handleReset} size="lg">
-            🔄 Reset
-          </Button>
-        </ButtonGroup>
+            {/* Background circle */}
+            <circle
+              cx={center}
+              cy={center}
+              r={radius}
+              fill="none"
+              stroke="#f5f5f5"
+              strokeWidth={strokeWidth}
+            />
+            {/* Progress circle */}
+            <circle
+              cx={center}
+              cy={center}
+              r={radius}
+              fill="none"
+              stroke={getTimerColor()}
+              strokeWidth={strokeWidth}
+              strokeDasharray={circumference}
+              strokeDashoffset={strokeDashoffset}
+              strokeLinecap="round"
+              style={{
+                transition: "stroke-dashoffset 1s linear, stroke 0.3s ease",
+                filter: `drop-shadow(0 0 6px ${getTimerColor()}50)`,
+              }}
+            />
+          </svg>
 
-        <div className="text-center text-muted fst-italic">
-          <small>💡 Set your focus time and click Start!</small>
+          {/* Timer display in center */}
+          <div
+            className="position-absolute top-50 start-50 translate-middle text-center"
+            style={{ width: "100%" }}
+          >
+            <div
+              style={{
+                fontSize: "2.5rem",
+                fontWeight: "800",
+                fontFamily: "'SF Mono', 'Monaco', 'Courier New', monospace",
+                letterSpacing: "1px",
+                lineHeight: 1,
+                color: "#333",
+              }}
+            >
+              {String(minutes).padStart(2, "0")}
+              <span
+                style={{ opacity: 0.3, margin: "0 3px", fontWeight: "400" }}
+              >
+                :
+              </span>
+              {String(seconds).padStart(2, "0")}
+            </div>
+            <div
+              className="mt-2"
+              style={{
+                color: getTimerColor(),
+                fontSize: "0.65rem",
+                fontWeight: "700",
+                textTransform: "uppercase",
+                letterSpacing: "1.5px",
+                transition: "all 0.3s ease",
+              }}
+            >
+              {isRunning ? "FOCUS" : isPaused ? "PAUSED" : "READY"}
+            </div>
+          </div>
         </div>
+
+        {/* Time adjustment controls */}
+        {!isRunning && !isPaused && (
+          <div className="mb-3 w-100">
+            <div className="d-flex align-items-center justify-content-center gap-3">
+              <button
+                onClick={() => adjustTime(-5)}
+                disabled={initialMinutes <= 1}
+                style={{
+                  borderRadius: "50%",
+                  width: "40px",
+                  height: "40px",
+                  padding: 0,
+                  fontSize: "1.4rem",
+                  fontWeight: "300",
+                  border: "none",
+                  background: "#f5f5f5",
+                  color: "#333",
+                  cursor: initialMinutes <= 1 ? "not-allowed" : "pointer",
+                  opacity: initialMinutes <= 1 ? 0.4 : 1,
+                  transition: "all 0.2s ease",
+                }}
+                onMouseEnter={(e) => {
+                  if (initialMinutes > 1)
+                    e.target.style.background = COLORS.blue;
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = "#f5f5f5";
+                }}
+              >
+                −
+              </button>
+              <div
+                style={{
+                  fontSize: "1.3rem",
+                  fontWeight: "800",
+                  color: "#333",
+                  minWidth: "90px",
+                  textAlign: "center",
+                  padding: "10px 20px",
+                  borderRadius: "14px",
+                  background: "#f5f5f5",
+                }}
+              >
+                {initialMinutes}
+                <span
+                  style={{
+                    fontSize: "0.9rem",
+                    fontWeight: "600",
+                    marginLeft: "4px",
+                  }}
+                >
+                  min
+                </span>
+              </div>
+              <button
+                onClick={() => adjustTime(5)}
+                disabled={initialMinutes >= 60}
+                style={{
+                  borderRadius: "50%",
+                  width: "40px",
+                  height: "40px",
+                  padding: 0,
+                  fontSize: "1.4rem",
+                  fontWeight: "300",
+                  border: "none",
+                  background: "#f5f5f5",
+                  color: "#333",
+                  cursor: initialMinutes >= 60 ? "not-allowed" : "pointer",
+                  opacity: initialMinutes >= 60 ? 0.4 : 1,
+                  transition: "all 0.2s ease",
+                }}
+                onMouseEnter={(e) => {
+                  if (initialMinutes < 60)
+                    e.target.style.background = COLORS.blue;
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = "#f5f5f5";
+                }}
+              >
+                +
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Control buttons */}
+        <div className="w-100 mb-3">
+          {!isRunning && !isPaused ? (
+            <button
+              onClick={handleStart}
+              style={{
+                width: "100%",
+                fontSize: "0.8rem",
+                fontWeight: "700",
+                padding: "10px 20px",
+                textTransform: "uppercase",
+                letterSpacing: "1.5px",
+                background: COLORS.blue,
+                border: "none",
+                borderRadius: "12px",
+                color: "#333",
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+                boxShadow: `0 4px 12px ${COLORS.blue}40`,
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = "translateY(-2px)";
+                e.target.style.boxShadow = `0 6px 20px ${COLORS.blue}60`;
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = "translateY(0)";
+                e.target.style.boxShadow = `0 4px 12px ${COLORS.blue}40`;
+              }}
+            >
+              ▶ START
+            </button>
+          ) : (
+            <div className="d-flex gap-2">
+              {isRunning ? (
+                <button
+                  onClick={handlePause}
+                  style={{
+                    flex: "1",
+                    fontSize: "0.75rem",
+                    fontWeight: "700",
+                    padding: "10px",
+                    background: COLORS.orange,
+                    border: "none",
+                    borderRadius: "12px",
+                    color: "#333",
+                    cursor: "pointer",
+                    transition: "all 0.3s ease",
+                    textTransform: "uppercase",
+                    letterSpacing: "1px",
+                  }}
+                >
+                  ⏸ PAUSE
+                </button>
+              ) : (
+                <button
+                  onClick={handleStart}
+                  style={{
+                    flex: "1",
+                    fontSize: "0.75rem",
+                    fontWeight: "700",
+                    padding: "10px",
+                    background: COLORS.blue,
+                    border: "none",
+                    borderRadius: "12px",
+                    color: "#333",
+                    cursor: "pointer",
+                    transition: "all 0.3s ease",
+                    textTransform: "uppercase",
+                    letterSpacing: "1px",
+                  }}
+                >
+                  ▶ RESUME
+                </button>
+              )}
+              <button
+                onClick={handleReset}
+                style={{
+                  fontSize: "0.75rem",
+                  fontWeight: "700",
+                  padding: "10px 16px",
+                  background: "#f5f5f5",
+                  border: "none",
+                  borderRadius: "12px",
+                  color: "#666",
+                  cursor: "pointer",
+                  transition: "all 0.3s ease",
+                  textTransform: "uppercase",
+                  letterSpacing: "1px",
+                }}
+              >
+                ↺ RESET
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Quick presets */}
+        {!isRunning && !isPaused && (
+          <div className="w-100">
+            <div
+              className="text-center mb-2"
+              style={{
+                fontSize: "0.6rem",
+                color: "#999",
+                fontWeight: "600",
+                textTransform: "uppercase",
+                letterSpacing: "1px",
+              }}
+            >
+              Quick Presets
+            </div>
+            <div className="d-flex gap-2 justify-content-center">
+              {[
+                { time: 15, color: COLORS.yellow },
+                { time: 25, color: COLORS.blue },
+                { time: 45, color: COLORS.orange },
+              ].map(({ time, color }) => (
+                <button
+                  key={time}
+                  onClick={() => {
+                    setInitialMinutes(time);
+                    setMinutes(time);
+                    setSeconds(0);
+                  }}
+                  style={{
+                    fontSize: "0.7rem",
+                    fontWeight: "700",
+                    borderRadius: "10px",
+                    flex: 1,
+                    background: color,
+                    border: "none",
+                    color: "#333",
+                    padding: "8px",
+                    cursor: "pointer",
+                    transition: "all 0.2s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.transform = "scale(1.05)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.transform = "scale(1)";
+                  }}
+                >
+                  {time}m
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </Card.Body>
     </Card>
   );
