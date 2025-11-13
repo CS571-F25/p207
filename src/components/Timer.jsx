@@ -109,8 +109,8 @@ function Timer() {
   };
 
   // SVG circle properties
-  const size = 220;
-  const strokeWidth = 12;
+  const size = 280;
+  const strokeWidth = 14;
   const center = size / 2;
   const radius = center - strokeWidth / 2;
   const circumference = 2 * Math.PI * radius;
@@ -197,7 +197,7 @@ function Timer() {
           >
             <div
               style={{
-                fontSize: "3rem",
+                fontSize: "3.8rem",
                 fontWeight: "800",
                 fontFamily: "'SF Mono', 'Monaco', 'Courier New', monospace",
                 letterSpacing: "1px",

@@ -69,15 +69,18 @@ function App() {
           </button>
         </div>
 
-        {/* Timer Section */}
-        <div className="mb-5 d-flex justify-content-center">
-          <Timer />
-        </div>
+        {/* Timer and Todo List Section */}
+        <Row className="g-4">
+          {/* Timer Section - Left */}
+          <Col lg={5} md={12} className="mb-4 mb-lg-0">
+            <Timer />
+          </Col>
 
-        {/* Todo List Section */}
-        <div className="d-flex justify-content-center">
-          <TodoList />
-        </div>
+          {/* Todo List Section - Right */}
+          <Col lg={7} md={12}>
+            <TodoList />
+          </Col>
+        </Row>
       </Container>
     </Container>
   );

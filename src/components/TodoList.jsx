@@ -53,8 +53,8 @@ function TodoList() {
         background: "var(--card-bg)",
         borderRadius: "20px",
         boxShadow: "var(--card-shadow)",
-        padding: "2rem",
-        height: "100%",
+        padding: "2.5rem",
+        minHeight: "600px",
         display: "flex",
         flexDirection: "column",
         color: "var(--text-primary)",
@@ -92,8 +92,8 @@ function TodoList() {
             placeholder="What needs to be done?"
             style={{
               flex: 1,
-              padding: "12px 16px",
-              fontSize: "0.9rem",
+              padding: "14px 18px",
+              fontSize: "1rem",
               border: "2px solid var(--border-color)",
               borderRadius: "12px",
               outline: "none",
@@ -114,8 +114,8 @@ function TodoList() {
           <button
             type="submit"
             style={{
-              padding: "12px 24px",
-              fontSize: "0.75rem",
+              padding: "14px 28px",
+              fontSize: "0.85rem",
               fontWeight: "700",
               textTransform: "uppercase",
               letterSpacing: "1px",
@@ -257,7 +257,7 @@ function TodoList() {
                           flex: 1,
                           color: "var(--text-primary)",
                           fontWeight: "500",
-                          fontSize: "0.9rem",
+                          fontSize: "1.05rem",
                         }}
                       >
                         {todo.text}
