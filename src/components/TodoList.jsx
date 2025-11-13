@@ -50,13 +50,14 @@ function TodoList() {
     <div
       style={{
         border: "none",
-        background: "white",
+        background: "var(--card-bg)",
         borderRadius: "20px",
-        boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
+        boxShadow: "var(--card-shadow)",
         padding: "2rem",
         height: "100%",
         display: "flex",
         flexDirection: "column",
+        color: "var(--text-primary)",
       }}
     >
       {/* Header */}
@@ -64,7 +65,7 @@ function TodoList() {
         className="text-center mb-4"
         style={{
           padding: "10px 20px",
-          background: "#f5f5f5",
+          background: "var(--input-bg)",
           borderRadius: "12px",
         }}
       >
@@ -72,7 +73,7 @@ function TodoList() {
           style={{
             fontSize: "0.7rem",
             fontWeight: "700",
-            color: "#666",
+            color: "var(--text-secondary)",
             letterSpacing: "1.5px",
             textTransform: "uppercase",
           }}
@@ -93,20 +94,21 @@ function TodoList() {
               flex: 1,
               padding: "12px 16px",
               fontSize: "0.9rem",
-              border: "2px solid #f5f5f5",
+              border: "2px solid var(--border-color)",
               borderRadius: "12px",
               outline: "none",
               transition: "all 0.2s ease",
               fontWeight: "500",
-              color: "#333",
+              color: "var(--text-primary)",
+              background: "var(--input-bg)",
             }}
             onFocus={(e) => {
-              e.target.style.borderColor = COLORS.blue;
-              e.target.style.background = "#fafafa";
+              e.target.style.borderColor = "var(--accent-blue)";
+              e.target.style.background = "var(--input-focus)";
             }}
             onBlur={(e) => {
-              e.target.style.borderColor = "#f5f5f5";
-              e.target.style.background = "white";
+              e.target.style.borderColor = "var(--border-color)";
+              e.target.style.background = "var(--input-bg)";
             }}
           />
           <button
@@ -144,7 +146,7 @@ function TodoList() {
         className="mb-3 text-center"
         style={{
           padding: "8px 16px",
-          background: "#f5f5f5",
+          background: "var(--input-bg)",
           borderRadius: "12px",
         }}
       >
@@ -153,11 +155,13 @@ function TodoList() {
             fontSize: "0.75rem",
             fontWeight: "700",
             color:
-              totalCount > 0 && completedCount === totalCount ? "#333" : "#666",
+              totalCount > 0 && completedCount === totalCount
+                ? "var(--text-primary)"
+                : "var(--text-secondary)",
             letterSpacing: "0.5px",
             background:
               totalCount > 0 && completedCount === totalCount
-                ? COLORS.yellow
+                ? "var(--accent-yellow)"
                 : "transparent",
             padding:
               totalCount > 0 && completedCount === totalCount
@@ -187,15 +191,15 @@ function TodoList() {
           <div
             className="text-center py-5"
             style={{
-              background: "#f5f5f5",
+              background: "var(--input-bg)",
               borderRadius: "15px",
-              border: "2px dashed #ddd",
+              border: "2px dashed var(--border-color)",
             }}
           >
             <div style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>📋</div>
             <p
               style={{
-                color: "#999",
+                color: "var(--text-muted)",
                 fontWeight: "500",
                 margin: 0,
                 fontSize: "0.85rem",
@@ -213,7 +217,7 @@ function TodoList() {
                   style={{
                     fontSize: "0.65rem",
                     fontWeight: "700",
-                    color: "#999",
+                    color: "var(--text-muted)",
                     letterSpacing: "1.5px",
                     textTransform: "uppercase",
                     marginBottom: "8px",
@@ -232,7 +236,7 @@ function TodoList() {
                         gap: "12px",
                         padding: "12px 16px",
                         marginBottom: "8px",
-                        background: "#f5f5f5",
+                        background: "var(--input-bg)",
                         borderRadius: "12px",
                         transition: "all 0.3s ease",
                       }}
@@ -251,7 +255,7 @@ function TodoList() {
                       <span
                         style={{
                           flex: 1,
-                          color: "#333",
+                          color: "var(--text-primary)",
                           fontWeight: "500",
                           fontSize: "0.9rem",
                         }}
@@ -297,7 +301,7 @@ function TodoList() {
                   style={{
                     fontSize: "0.65rem",
                     fontWeight: "700",
-                    color: "#999",
+                    color: "var(--text-muted)",
                     letterSpacing: "1.5px",
                     textTransform: "uppercase",
                     marginBottom: "8px",
@@ -316,7 +320,7 @@ function TodoList() {
                         gap: "12px",
                         padding: "12px 16px",
                         marginBottom: "8px",
-                        background: COLORS.yellow,
+                        background: "var(--accent-yellow)",
                         borderRadius: "12px",
                         opacity: 0.7,
                         transition: "all 0.3s ease",
@@ -337,7 +341,7 @@ function TodoList() {
                         style={{
                           flex: 1,
                           textDecoration: "line-through",
-                          color: "#666",
+                          color: "var(--text-secondary)",
                           fontWeight: "400",
                           fontSize: "0.9rem",
                         }}

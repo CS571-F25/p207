@@ -37,7 +37,30 @@ function Timer() {
             if (minutes === 0) {
               setIsRunning(false);
               setIsPaused(false);
-              // Timer finished
+              // Timer finished - add notification
+              if (
+                "Notification" in window &&
+                Notification.permission === "granted"
+              ) {
+                new Notification("Timer Finished!", {
+                  body: "Your focus session is complete. Take a break!",
+                  icon: "/vite.svg",
+                });
+              } else if (
+                "Notification" in window &&
+                Notification.permission !== "denied"
+              ) {
+                Notification.requestPermission().then((permission) => {
+                  if (permission === "granted") {
+                    new Notification("Timer Finished!", {
+                      body: "Your focus session is complete. Take a break!",
+                      icon: "/vite.svg",
+                    });
+                  }
+                });
+              }
+              // Fallback alert
+              alert("Timer finished! Great job on your focus session.");
               return 0;
             }
             setMinutes((prevMinutes) => prevMinutes - 1);
@@ -86,8 +109,8 @@ function Timer() {
   };
 
   // SVG circle properties
-  const size = 200;
-  const strokeWidth = 10;
+  const size = 220;
+  const strokeWidth = 12;
   const center = size / 2;
   const radius = center - strokeWidth / 2;
   const circumference = 2 * Math.PI * radius;
@@ -99,9 +122,11 @@ function Timer() {
       className="compact-timer"
       style={{
         border: "none",
-        background: "white",
+        background: "var(--card-bg)",
         borderRadius: "20px",
-        boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
+        boxShadow: "var(--card-shadow)",
+        animation: isRunning ? "pulse 2s infinite" : "none",
+        transition: "all 0.3s ease",
       }}
     >
       <Card.Body className="p-4 d-flex flex-column align-items-center">
@@ -111,7 +136,7 @@ function Timer() {
           style={{
             width: "100%",
             padding: "8px 16px",
-            background: "#f5f5f5",
+            background: "var(--input-bg)",
             borderRadius: "12px",
           }}
         >
@@ -119,7 +144,7 @@ function Timer() {
             style={{
               fontSize: "0.65rem",
               fontWeight: "700",
-              color: "#666",
+              color: "var(--text-secondary)",
               letterSpacing: "1.5px",
               textTransform: "uppercase",
             }}
@@ -172,12 +197,12 @@ function Timer() {
           >
             <div
               style={{
-                fontSize: "2.5rem",
+                fontSize: "3rem",
                 fontWeight: "800",
                 fontFamily: "'SF Mono', 'Monaco', 'Courier New', monospace",
                 letterSpacing: "1px",
                 lineHeight: 1,
-                color: "#333",
+                color: "var(--text-primary)",
               }}
             >
               {String(minutes).padStart(2, "0")}
@@ -219,8 +244,8 @@ function Timer() {
                   fontSize: "1.4rem",
                   fontWeight: "300",
                   border: "none",
-                  background: "#f5f5f5",
-                  color: "#333",
+                  background: "var(--input-bg)",
+                  color: "var(--text-primary)",
                   cursor: initialMinutes <= 1 ? "not-allowed" : "pointer",
                   opacity: initialMinutes <= 1 ? 0.4 : 1,
                   transition: "all 0.2s ease",
@@ -239,12 +264,12 @@ function Timer() {
                 style={{
                   fontSize: "1.3rem",
                   fontWeight: "800",
-                  color: "#333",
+                  color: "var(--text-primary)",
                   minWidth: "90px",
                   textAlign: "center",
                   padding: "10px 20px",
                   borderRadius: "14px",
-                  background: "#f5f5f5",
+                  background: "var(--input-bg)",
                 }}
               >
                 {initialMinutes}
@@ -269,8 +294,8 @@ function Timer() {
                   fontSize: "1.4rem",
                   fontWeight: "300",
                   border: "none",
-                  background: "#f5f5f5",
-                  color: "#333",
+                  background: "var(--input-bg)",
+                  color: "var(--text-primary)",
                   cursor: initialMinutes >= 60 ? "not-allowed" : "pointer",
                   opacity: initialMinutes >= 60 ? 0.4 : 1,
                   transition: "all 0.2s ease",
@@ -369,10 +394,10 @@ function Timer() {
                   fontSize: "0.75rem",
                   fontWeight: "700",
                   padding: "10px 16px",
-                  background: "#f5f5f5",
+                  background: "var(--input-bg)",
                   border: "none",
                   borderRadius: "12px",
-                  color: "#666",
+                  color: "var(--text-secondary)",
                   cursor: "pointer",
                   transition: "all 0.3s ease",
                   textTransform: "uppercase",
@@ -392,7 +417,7 @@ function Timer() {
               className="text-center mb-2"
               style={{
                 fontSize: "0.6rem",
-                color: "#999",
+                color: "var(--text-muted)",
                 fontWeight: "600",
                 textTransform: "uppercase",
                 letterSpacing: "1px",
