@@ -29,32 +29,11 @@ function App() {
   };
   return (
     <Container fluid className="min-vh-100 py-5">
-      {/* Dark mode toggle */}
-      <div className="d-flex justify-content-end mb-3">
-        <button
-          onClick={toggleDarkMode}
-          style={{
-            background: 'rgba(255,255,255,0.2)',
-            border: 'none',
-            borderRadius: '50%',
-            width: '50px',
-            height: '50px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            transition: 'all 0.3s ease',
-            backdropFilter: 'blur(10px)',
-          }}
-          onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
-          onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
-        >
-          {darkMode ? '☀️' : '🌙'}
-        </button>
-      </div>
-
       <Container>
-        <div className="text-center mb-4 p-3 text-white header-gradient d-flex flex-column justify-content-center align-items-center" style={{ minHeight: '200px' }}>
+        <div
+          className="text-center mb-4 p-3 text-white header-gradient d-flex flex-column justify-content-center align-items-center"
+          style={{ minHeight: "200px" }}
+        >
           <h1 className="display-3 fw-bold mb-3">
             <span style={{ fontSize: "3rem" }}>⏰</span> Todo Timer App
           </h1>
@@ -66,15 +45,39 @@ function App() {
           </p>
         </div>
 
-        <Row className="g-4 justify-content-center">
-          <Col lg={3} md={4} sm={12} className="order-1">
-            <Timer />
-          </Col>
-          <Col lg={6} md={8} sm={12} className="order-2">
-            <Quotes />
-            <TodoList />
-          </Col>
-        </Row>
+        {/* Dark mode toggle */}
+        <div className="d-flex justify-content-end mb-3">
+          <button
+            onClick={toggleDarkMode}
+            style={{
+              background: "rgba(255,255,255,0.2)",
+              border: "none",
+              borderRadius: "50%",
+              width: "50px",
+              height: "50px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              transition: "all 0.3s ease",
+              backdropFilter: "blur(10px)",
+            }}
+            onMouseEnter={(e) => (e.target.style.transform = "scale(1.1)")}
+            onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
+          >
+            {darkMode ? "☀️" : "🌙"}
+          </button>
+        </div>
+
+        {/* Timer Section */}
+        <div className="mb-5 d-flex justify-content-center">
+          <Timer />
+        </div>
+
+        {/* Todo List Section */}
+        <div className="d-flex justify-content-center">
+          <TodoList />
+        </div>
       </Container>
     </Container>
   );
