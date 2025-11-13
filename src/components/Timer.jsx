@@ -197,9 +197,9 @@ function Timer() {
           >
             <div
               style={{
-                fontSize: "3.8rem",
-                fontWeight: "800",
-                fontFamily: "'SF Mono', 'Monaco', 'Courier New', monospace",
+                fontSize: "4rem",
+                fontWeight: "900",
+                fontFamily: "'Inter', sans-serif",
                 letterSpacing: "1px",
                 lineHeight: 1,
                 color: "var(--text-primary)",
@@ -217,7 +217,7 @@ function Timer() {
               className="mt-2"
               style={{
                 color: getTimerColor(),
-                fontSize: "0.65rem",
+                fontSize: "0.8rem",
                 fontWeight: "700",
                 textTransform: "uppercase",
                 letterSpacing: "1.5px",
@@ -241,7 +241,7 @@ function Timer() {
                   width: "40px",
                   height: "40px",
                   padding: 0,
-                  fontSize: "1.4rem",
+                  fontSize: "1.6rem",
                   fontWeight: "300",
                   border: "none",
                   background: "var(--input-bg)",
@@ -262,7 +262,7 @@ function Timer() {
               </button>
               <div
                 style={{
-                  fontSize: "1.3rem",
+                  fontSize: "1.5rem",
                   fontWeight: "800",
                   color: "var(--text-primary)",
                   minWidth: "90px",
@@ -275,7 +275,7 @@ function Timer() {
                 {initialMinutes}
                 <span
                   style={{
-                    fontSize: "0.9rem",
+                    fontSize: "1.1rem",
                     fontWeight: "600",
                     marginLeft: "4px",
                   }}
@@ -291,7 +291,7 @@ function Timer() {
                   width: "40px",
                   height: "40px",
                   padding: 0,
-                  fontSize: "1.4rem",
+                  fontSize: "1.6rem",
                   fontWeight: "300",
                   border: "none",
                   background: "var(--input-bg)",
@@ -321,7 +321,7 @@ function Timer() {
               onClick={handleStart}
               style={{
                 width: "100%",
-                fontSize: "0.8rem",
+                fontSize: "1rem",
                 fontWeight: "700",
                 padding: "10px 20px",
                 textTransform: "uppercase",
@@ -352,7 +352,7 @@ function Timer() {
                   onClick={handlePause}
                   style={{
                     flex: "1",
-                    fontSize: "0.75rem",
+                    fontSize: "0.9rem",
                     fontWeight: "700",
                     padding: "10px",
                     background: COLORS.orange,
@@ -372,7 +372,7 @@ function Timer() {
                   onClick={handleStart}
                   style={{
                     flex: "1",
-                    fontSize: "0.75rem",
+                    fontSize: "0.9rem",
                     fontWeight: "700",
                     padding: "10px",
                     background: COLORS.blue,
@@ -391,7 +391,7 @@ function Timer() {
               <button
                 onClick={handleReset}
                 style={{
-                  fontSize: "0.75rem",
+                  fontSize: "0.9rem",
                   fontWeight: "700",
                   padding: "10px 16px",
                   background: "var(--input-bg)",
@@ -416,7 +416,7 @@ function Timer() {
             <div
               className="text-center mb-2"
               style={{
-                fontSize: "0.6rem",
+                fontSize: "0.75rem",
                 color: "var(--text-muted)",
                 fontWeight: "600",
                 textTransform: "uppercase",
@@ -439,7 +439,7 @@ function Timer() {
                     setSeconds(0);
                   }}
                   style={{
-                    fontSize: "0.7rem",
+                    fontSize: "0.85rem",
                     fontWeight: "700",
                     borderRadius: "10px",
                     flex: 1,

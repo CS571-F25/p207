@@ -61,7 +61,7 @@ function Quotes() {
       <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>💡</div>
       <blockquote
         style={{
-          fontSize: "1.1rem",
+          fontSize: "1.25rem",
           fontStyle: "italic",
           color: "var(--text-primary)",
           margin: 0,
@@ -73,7 +73,7 @@ function Quotes() {
       </blockquote>
       <cite
         style={{
-          fontSize: "0.9rem",
+          fontSize: "1.05rem",
           color: "var(--text-secondary)",
           fontWeight: "600",
         }}

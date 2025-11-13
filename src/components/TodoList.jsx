@@ -72,7 +72,7 @@ function TodoList() {
       >
         <div
           style={{
-            fontSize: "0.7rem",
+            fontSize: "0.85rem",
             fontWeight: "700",
             color: "var(--text-secondary)",
             letterSpacing: "1.5px",
@@ -94,7 +94,7 @@ function TodoList() {
             style={{
               flex: 1,
               padding: "14px 18px",
-              fontSize: "1rem",
+              fontSize: "1.15rem",
               border: "2px solid var(--border-color)",
               borderRadius: "12px",
               outline: "none",
@@ -116,7 +116,7 @@ function TodoList() {
             type="submit"
             style={{
               padding: "14px 28px",
-              fontSize: "0.85rem",
+              fontSize: "1rem",
               fontWeight: "700",
               textTransform: "uppercase",
               letterSpacing: "1px",
@@ -153,7 +153,7 @@ function TodoList() {
       >
         <div
           style={{
-            fontSize: "0.75rem",
+            fontSize: "0.9rem",
             fontWeight: "700",
             color:
               totalCount > 0 && completedCount === totalCount
@@ -216,7 +216,7 @@ function TodoList() {
               <div style={{ marginBottom: "1.5rem" }}>
                 <div
                   style={{
-                    fontSize: "0.65rem",
+                    fontSize: "0.8rem",
                     fontWeight: "700",
                     color: "var(--text-muted)",
                     letterSpacing: "1.5px",
@@ -258,7 +258,7 @@ function TodoList() {
                           flex: 1,
                           color: "var(--text-primary)",
                           fontWeight: "500",
-                          fontSize: "1.05rem",
+                          fontSize: "1.2rem",
                         }}
                       >
                         {todo.text}
@@ -300,7 +300,7 @@ function TodoList() {
               <div>
                 <div
                   style={{
-                    fontSize: "0.65rem",
+                    fontSize: "0.8rem",
                     fontWeight: "700",
                     color: "var(--text-muted)",
                     letterSpacing: "1.5px",
@@ -344,7 +344,7 @@ function TodoList() {
                           textDecoration: "line-through",
                           color: "var(--text-secondary)",
                           fontWeight: "400",
-                          fontSize: "0.9rem",
+                          fontSize: "1.05rem",
                         }}
                       >
                         {todo.text}
