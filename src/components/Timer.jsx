@@ -136,7 +136,8 @@ function Timer() {
           style={{
             width: "100%",
             padding: "8px 16px",
-            background: "var(--input-bg)",
+            background:
+              "linear-gradient(135deg, #06B6D4 0%, #14B8A6 50%, #10B981 100%)",
             borderRadius: "12px",
           }}
         >
@@ -155,13 +156,23 @@ function Timer() {
 
         {/* Circular Timer */}
         <div
-          className="position-relative mb-4"
-          style={{ width: size, height: size }}
+          className="mb-4"
+          style={{
+            position: "relative",
+            width: size,
+            height: size,
+            margin: "0 auto",
+          }}
         >
           <svg
             width={size}
             height={size}
-            style={{ transform: "rotate(-90deg)" }}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              transform: "rotate(-90deg)",
+            }}
           >
             {/* Background circle */}
             <circle
@@ -178,22 +189,28 @@ function Timer() {
               cy={center}
               r={radius}
               fill="none"
-              stroke={getTimerColor()}
+              stroke="#14B8A6"
               strokeWidth={strokeWidth}
               strokeDasharray={circumference}
               strokeDashoffset={strokeDashoffset}
               strokeLinecap="round"
               style={{
                 transition: "stroke-dashoffset 1s linear, stroke 0.3s ease",
-                filter: `drop-shadow(0 0 6px ${getTimerColor()}50)`,
+                filter: `drop-shadow(0 0 6px #14B8A650)`,
               }}
             />
           </svg>
 
           {/* Timer display in center */}
           <div
-            className="position-absolute top-50 start-50 translate-middle text-center"
-            style={{ width: "100%" }}
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              textAlign: "center",
+              width: "100%",
+            }}
           >
             <div
               style={{
@@ -202,7 +219,7 @@ function Timer() {
                 fontFamily: "'Inter', sans-serif",
                 letterSpacing: "1px",
                 lineHeight: 1,
-                color: "var(--text-primary)",
+                color: "#0F766E",
               }}
             >
               {String(minutes).padStart(2, "0")}
@@ -216,7 +233,7 @@ function Timer() {
             <div
               className="mt-2"
               style={{
-                color: getTimerColor(),
+                color: "#06B6D4",
                 fontSize: "0.8rem",
                 fontWeight: "700",
                 textTransform: "uppercase",
@@ -326,21 +343,21 @@ function Timer() {
                 padding: "10px 20px",
                 textTransform: "uppercase",
                 letterSpacing: "1.5px",
-                background: COLORS.blue,
+                background: "#14B8A6",
                 border: "none",
                 borderRadius: "12px",
-                color: "#333",
+                color: "#FFFFFF",
                 cursor: "pointer",
                 transition: "all 0.3s ease",
-                boxShadow: `0 4px 12px ${COLORS.blue}40`,
+                boxShadow: `0 4px 12px #14B8A640`,
               }}
               onMouseEnter={(e) => {
                 e.target.style.transform = "translateY(-2px)";
-                e.target.style.boxShadow = `0 6px 20px ${COLORS.blue}60`;
+                e.target.style.boxShadow = `0 6px 20px #14B8A660`;
               }}
               onMouseLeave={(e) => {
                 e.target.style.transform = "translateY(0)";
-                e.target.style.boxShadow = `0 4px 12px ${COLORS.blue}40`;
+                e.target.style.boxShadow = `0 4px 12px #14B8A640`;
               }}
             >
               ▶ START
@@ -427,10 +444,10 @@ function Timer() {
             </div>
             <div className="d-flex gap-2 justify-content-center">
               {[
-                { time: 15, color: COLORS.yellow },
-                { time: 25, color: COLORS.blue },
-                { time: 45, color: COLORS.orange },
-              ].map(({ time, color }) => (
+                { time: 15, color: "#FBBF24", textColor: "#064E3B" },
+                { time: 25, color: "#06B6D4", textColor: "#FFFFFF" },
+                { time: 45, color: "#F97316", textColor: "#FFFFFF" },
+              ].map(({ time, color, textColor }) => (
                 <button
                   key={time}
                   onClick={() => {
@@ -445,7 +462,7 @@ function Timer() {
                     flex: 1,
                     background: color,
                     border: "none",
-                    color: "#333",
+                    color: textColor,
                     padding: "8px",
                     cursor: "pointer",
                     transition: "all 0.2s ease",

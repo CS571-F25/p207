@@ -1,35 +1,158 @@
-import { Container, Row, Col } from "react-bootstrap";
-import Timer from "../components/Timer";
-import DarkModeToggle from "../components/DarkModeToggle";
+import { useState, useEffect } from "react";
+import { Container } from "react-bootstrap";
+import "./TimerPage.css";
 
 function TimerPage() {
+  const [minutes, setMinutes] = useState(25);
+  const [seconds, setSeconds] = useState(0);
+  const [isActive, setIsActive] = useState(false);
+  const [totalSeconds, setTotalSeconds] = useState(25 * 60);
+
+  useEffect(() => {
+    let interval = null;
+    if (isActive && (minutes > 0 || seconds > 0)) {
+      interval = setInterval(() => {
+        if (seconds === 0) {
+          if (minutes === 0) {
+            setIsActive(false);
+          } else {
+            setMinutes(minutes - 1);
+            setSeconds(59);
+          }
+        } else {
+          setSeconds(seconds - 1);
+        }
+      }, 1000);
+    } else if (minutes === 0 && seconds === 0) {
+      setIsActive(false);
+    }
+    return () => clearInterval(interval);
+  }, [isActive, minutes, seconds]);
+
+  const progress =
+    ((totalSeconds - (minutes * 60 + seconds)) / totalSeconds) * 100;
+
+  const toggleTimer = () => setIsActive(!isActive);
+  const resetTimer = () => {
+    setIsActive(false);
+    setMinutes(25);
+    setSeconds(0);
+    setTotalSeconds(25 * 60);
+  };
+
+  const setPreset = (mins) => {
+    setIsActive(false);
+    setMinutes(mins);
+    setSeconds(0);
+    setTotalSeconds(mins * 60);
+  };
+
   return (
-    <Container fluid className="min-vh-100 py-5">
+    <div className="timer-page">
       <Container>
-        <div
-          className="text-center mb-4 p-3 text-white header-gradient d-flex flex-column justify-content-center align-items-center"
-          style={{ minHeight: "200px" }}
-        >
-          <h1 className="display-3 fw-bold mb-3">
-            <span style={{ fontSize: "3rem" }}>⏰</span> Timer
+        <div className="timer-hero">
+          <h1 className="timer-title">
+            <span className="timer-icon">⏰</span>
+            Pomodoro Timer
           </h1>
-          <p
-            className="lead mb-0"
-            style={{ fontSize: "1.2rem", opacity: 0.95 }}
-          >
-            Focus on your tasks with our Pomodoro timer
-          </p>
+          <p className="timer-subtitle">Stay focused, stay productive</p>
         </div>
 
-        <DarkModeToggle />
+        <div className="timer-container">
+          <div className="timer-card">
+            {/* Circular Progress */}
+            <svg className="progress-ring" width="280" height="280">
+              <defs>
+                <linearGradient
+                  id="gradient"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="100%"
+                >
+                  <stop offset="0%" stopColor="#667EEA" />
+                  <stop offset="100%" stopColor="#764BA2" />
+                </linearGradient>
+              </defs>
+              <circle
+                className="progress-ring-circle-bg"
+                cx="140"
+                cy="140"
+                r="120"
+              />
+              <circle
+                className="progress-ring-circle"
+                cx="140"
+                cy="140"
+                r="120"
+                style={{
+                  strokeDasharray: `${2 * Math.PI * 120}`,
+                  strokeDashoffset: `${
+                    2 * Math.PI * 120 * (1 - progress / 100)
+                  }`,
+                }}
+              />
+            </svg>
 
-        <Row className="justify-content-center">
-          <Col lg={8} md={10}>
-            <Timer />
-          </Col>
-        </Row>
+            {/* Timer Display */}
+            <div className="timer-display">
+              <div className="time-text">
+                {String(minutes).padStart(2, "0")}:
+                {String(seconds).padStart(2, "0")}
+              </div>
+              <div className="status-text">
+                {isActive ? "FOCUSING" : "READY"}
+              </div>
+            </div>
+          </div>
+
+          {/* Controls */}
+          <div className="timer-controls">
+            <button className="btn-timer-main" onClick={toggleTimer}>
+              {isActive ? "⏸ PAUSE" : "▶ START"}
+            </button>
+            <button className="btn-timer-secondary" onClick={resetTimer}>
+              ↻ RESET
+            </button>
+          </div>
+
+          {/* Quick Presets */}
+          <div className="presets-section">
+            <h3 className="presets-title">Quick Sessions</h3>
+            <div className="preset-buttons">
+              <button
+                className="preset-btn preset-short"
+                onClick={() => setPreset(5)}
+              >
+                <span className="preset-time">5</span>
+                <span className="preset-label">min</span>
+              </button>
+              <button
+                className="preset-btn preset-medium"
+                onClick={() => setPreset(15)}
+              >
+                <span className="preset-time">15</span>
+                <span className="preset-label">min</span>
+              </button>
+              <button
+                className="preset-btn preset-pomodoro"
+                onClick={() => setPreset(25)}
+              >
+                <span className="preset-time">25</span>
+                <span className="preset-label">min</span>
+              </button>
+              <button
+                className="preset-btn preset-long"
+                onClick={() => setPreset(45)}
+              >
+                <span className="preset-time">45</span>
+                <span className="preset-label">min</span>
+              </button>
+            </div>
+          </div>
+        </div>
       </Container>
-    </Container>
+    </div>
   );
 }
 

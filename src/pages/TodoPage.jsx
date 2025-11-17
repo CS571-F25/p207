@@ -4,8 +4,12 @@ import DarkModeToggle from "../components/DarkModeToggle";
 
 function TodoPage() {
   return (
-    <Container fluid className="min-vh-100 py-5">
-      <Container>
+    <Container
+      fluid
+      className="min-vh-100 pb-5"
+      style={{ background: "var(--bg-primary)" }}
+    >
+      <Container className="pt-5">
         <div
           className="text-center mb-4 p-3 text-white header-gradient d-flex flex-column justify-content-center align-items-center"
           style={{ minHeight: "200px" }}
