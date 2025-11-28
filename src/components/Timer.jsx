@@ -23,10 +23,18 @@ function Timer() {
 
   // Get color based on time remaining
   const getTimerColor = () => {
-    if (progressPercentage > 75) return COLORS.blue;
-    if (progressPercentage > 50) return COLORS.yellow;
-    if (progressPercentage > 25) return COLORS.orange;
-    return COLORS.red;
+    const color =
+      progressPercentage > 75 ? COLORS.blue :
+      progressPercentage > 50 ? COLORS.yellow :
+      progressPercentage > 25 ? COLORS.orange :
+      COLORS.red;
+
+    // Debug logging
+    if (isRunning) {
+      console.log(`Progress: ${progressPercentage.toFixed(1)}% | Color: ${color} | ${minutes}:${String(seconds).padStart(2, '0')}`);
+    }
+
+    return color;
   };
 
   useEffect(() => {
@@ -189,14 +197,14 @@ function Timer() {
               cy={center}
               r={radius}
               fill="none"
-              stroke="#14B8A6"
+              stroke={getTimerColor()}
               strokeWidth={strokeWidth}
               strokeDasharray={circumference}
               strokeDashoffset={strokeDashoffset}
               strokeLinecap="round"
               style={{
                 transition: "stroke-dashoffset 1s linear, stroke 0.3s ease",
-                filter: `drop-shadow(0 0 6px #14B8A650)`,
+                filter: `drop-shadow(0 0 8px ${getTimerColor()}50)`,
               }}
             />
           </svg>
@@ -219,7 +227,7 @@ function Timer() {
                 fontFamily: "'Inter', sans-serif",
                 letterSpacing: "1px",
                 lineHeight: 1,
-                color: "#0F766E",
+                color: getTimerColor(),
               }}
             >
               {String(minutes).padStart(2, "0")}
@@ -233,7 +241,7 @@ function Timer() {
             <div
               className="mt-2"
               style={{
-                color: "#06B6D4",
+                color: getTimerColor(),
                 fontSize: "0.8rem",
                 fontWeight: "700",
                 textTransform: "uppercase",
@@ -242,6 +250,16 @@ function Timer() {
               }}
             >
               {isRunning ? "FOCUS" : isPaused ? "PAUSED" : "READY"}
+            </div>
+            <div
+              className="mt-1"
+              style={{
+                color: "var(--text-muted)",
+                fontSize: "0.7rem",
+                fontWeight: "600",
+              }}
+            >
+              {Math.round(progressPercentage)}% remaining
             </div>
           </div>
         </div>
@@ -444,6 +462,7 @@ function Timer() {
             </div>
             <div className="d-flex gap-2 justify-content-center">
               {[
+                { time: 1, color: "#10B981", textColor: "#FFFFFF" },
                 { time: 15, color: "#FBBF24", textColor: "#064E3B" },
                 { time: 25, color: "#06B6D4", textColor: "#FFFFFF" },
                 { time: 45, color: "#F97316", textColor: "#FFFFFF" },

@@ -32,6 +32,33 @@ function TimerPage() {
   const progress =
     ((totalSeconds - (minutes * 60 + seconds)) / totalSeconds) * 100;
 
+  // Custom color palette
+  const COLORS = {
+    blue: "#8CE4FF",
+    yellow: "#FEEE91",
+    orange: "#FFA239",
+    red: "#FF5656",
+  };
+
+  // Get color based on time remaining
+  const currentSeconds = minutes * 60 + seconds;
+  const progressPercentage = (currentSeconds / totalSeconds) * 100;
+
+  const getTimerColor = () => {
+    const color =
+      progressPercentage > 75 ? COLORS.blue :
+      progressPercentage > 50 ? COLORS.yellow :
+      progressPercentage > 25 ? COLORS.orange :
+      COLORS.red;
+
+    // Debug logging
+    if (isActive) {
+      console.log(`Progress: ${progressPercentage.toFixed(1)}% | Color: ${color} | ${minutes}:${String(seconds).padStart(2, '0')}`);
+    }
+
+    return color;
+  };
+
   const toggleTimer = () => setIsActive(!isActive);
   const resetTimer = () => {
     setIsActive(false);
@@ -62,18 +89,6 @@ function TimerPage() {
           <div className="timer-card">
             {/* Circular Progress */}
             <svg className="progress-ring" width="280" height="280">
-              <defs>
-                <linearGradient
-                  id="gradient"
-                  x1="0%"
-                  y1="0%"
-                  x2="100%"
-                  y2="100%"
-                >
-                  <stop offset="0%" stopColor="#667EEA" />
-                  <stop offset="100%" stopColor="#764BA2" />
-                </linearGradient>
-              </defs>
               <circle
                 className="progress-ring-circle-bg"
                 cx="140"
@@ -90,18 +105,23 @@ function TimerPage() {
                   strokeDashoffset: `${
                     2 * Math.PI * 120 * (1 - progress / 100)
                   }`,
+                  stroke: getTimerColor(),
+                  filter: `drop-shadow(0 0 8px ${getTimerColor()}50)`,
                 }}
               />
             </svg>
 
             {/* Timer Display */}
             <div className="timer-display">
-              <div className="time-text">
+              <div className="time-text" style={{ color: getTimerColor() }}>
                 {String(minutes).padStart(2, "0")}:
                 {String(seconds).padStart(2, "0")}
               </div>
-              <div className="status-text">
+              <div className="status-text" style={{ color: getTimerColor() }}>
                 {isActive ? "FOCUSING" : "READY"}
+              </div>
+              <div className="percentage-text" style={{ color: "var(--text-muted)", fontSize: "0.8rem", marginTop: "0.5rem" }}>
+                {Math.round(progressPercentage)}% remaining
               </div>
             </div>
           </div>
@@ -122,9 +142,9 @@ function TimerPage() {
             <div className="preset-buttons">
               <button
                 className="preset-btn preset-short"
-                onClick={() => setPreset(5)}
+                onClick={() => setPreset(1)}
               >
-                <span className="preset-time">5</span>
+                <span className="preset-time">1</span>
                 <span className="preset-label">min</span>
               </button>
               <button
