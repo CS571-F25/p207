@@ -21,23 +21,44 @@ function Timer({
   const currentSeconds = minutes * 60 + seconds;
   const progressPercentage = (currentSeconds / totalSeconds) * 100;
 
-  // Custom color palette
+  // Enhanced color palette with 6 ranges
   const COLORS = {
-    blue: "#8CE4FF",
-    yellow: "#FEEE91",
-    orange: "#FFA239",
-    red: "#FF5656",
+    emerald: "#10B981",
+    cyan: "#06B6D4",
+    sky: "#0EA5E9",
+    amber: "#F59E0B",
+    orange: "#F97316",
+    rose: "#F43F5E",
   };
 
-  // Get color based on time remaining
+  // Get color based on time remaining (6 color ranges)
   const getTimerColor = () => {
     const color =
-      progressPercentage > 75 ? COLORS.blue :
-      progressPercentage > 50 ? COLORS.yellow :
-      progressPercentage > 25 ? COLORS.orange :
-      COLORS.red;
+      progressPercentage > 83 ? COLORS.emerald :  // 100-83%: emerald
+      progressPercentage > 66 ? COLORS.cyan :     // 83-66%: cyan
+      progressPercentage > 50 ? COLORS.sky :      // 66-50%: sky
+      progressPercentage > 33 ? COLORS.amber :    // 50-33%: amber
+      progressPercentage > 16 ? COLORS.orange :   // 33-16%: orange
+      COLORS.rose;                                // 16-0%: rose
 
     return color;
+  };
+
+  // Get gradient based on time remaining
+  const getTimerGradient = () => {
+    if (progressPercentage > 83) {
+      return `linear-gradient(135deg, ${COLORS.emerald} 0%, #059669 100%)`;
+    } else if (progressPercentage > 66) {
+      return `linear-gradient(135deg, ${COLORS.cyan} 0%, #0891B2 100%)`;
+    } else if (progressPercentage > 50) {
+      return `linear-gradient(135deg, ${COLORS.sky} 0%, #0284C7 100%)`;
+    } else if (progressPercentage > 33) {
+      return `linear-gradient(135deg, ${COLORS.amber} 0%, #D97706 100%)`;
+    } else if (progressPercentage > 16) {
+      return `linear-gradient(135deg, ${COLORS.orange} 0%, #EA580C 100%)`;
+    } else {
+      return `linear-gradient(135deg, ${COLORS.rose} 0%, #E11D48 100%)`;
+    }
   };
 
   useEffect(() => {
@@ -383,10 +404,10 @@ function Timer({
                 }}
                 onMouseEnter={(e) => {
                   if (initialMinutes > 1)
-                    e.target.style.background = COLORS.blue;
+                    e.target.style.background = getTimerColor();
                 }}
                 onMouseLeave={(e) => {
-                  e.target.style.background = "#f5f5f5";
+                  e.target.style.background = "var(--input-bg)";
                 }}
               >
                 −
@@ -433,10 +454,10 @@ function Timer({
                 }}
                 onMouseEnter={(e) => {
                   if (initialMinutes < 60)
-                    e.target.style.background = COLORS.blue;
+                    e.target.style.background = getTimerColor();
                 }}
                 onMouseLeave={(e) => {
-                  e.target.style.background = "#f5f5f5";
+                  e.target.style.background = "var(--input-bg)";
                 }}
               >
                 +
@@ -457,21 +478,21 @@ function Timer({
                 padding: "10px 20px",
                 textTransform: "uppercase",
                 letterSpacing: "1.5px",
-                background: "#14B8A6",
+                background: getTimerGradient(),
                 border: "none",
                 borderRadius: "12px",
                 color: "#FFFFFF",
                 cursor: "pointer",
                 transition: "all 0.3s ease",
-                boxShadow: `0 4px 12px #14B8A640`,
+                boxShadow: `0 4px 12px ${getTimerColor()}40`,
               }}
               onMouseEnter={(e) => {
                 e.target.style.transform = "translateY(-2px)";
-                e.target.style.boxShadow = `0 6px 20px #14B8A660`;
+                e.target.style.boxShadow = `0 6px 20px ${getTimerColor()}60`;
               }}
               onMouseLeave={(e) => {
                 e.target.style.transform = "translateY(0)";
-                e.target.style.boxShadow = `0 4px 12px #14B8A640`;
+                e.target.style.boxShadow = `0 4px 12px ${getTimerColor()}40`;
               }}
             >
               ▶ START
@@ -486,14 +507,15 @@ function Timer({
                     fontSize: "0.9rem",
                     fontWeight: "700",
                     padding: "10px",
-                    background: COLORS.orange,
+                    background: `linear-gradient(135deg, ${COLORS.amber} 0%, #D97706 100%)`,
                     border: "none",
                     borderRadius: "12px",
-                    color: "#333",
+                    color: "#FFFFFF",
                     cursor: "pointer",
                     transition: "all 0.3s ease",
                     textTransform: "uppercase",
                     letterSpacing: "1px",
+                    boxShadow: `0 2px 8px ${COLORS.amber}40`,
                   }}
                 >
                   ⏸ PAUSE
@@ -506,14 +528,15 @@ function Timer({
                     fontSize: "0.9rem",
                     fontWeight: "700",
                     padding: "10px",
-                    background: COLORS.blue,
+                    background: getTimerGradient(),
                     border: "none",
                     borderRadius: "12px",
-                    color: "#333",
+                    color: "#FFFFFF",
                     cursor: "pointer",
                     transition: "all 0.3s ease",
                     textTransform: "uppercase",
                     letterSpacing: "1px",
+                    boxShadow: `0 2px 8px ${getTimerColor()}40`,
                   }}
                 >
                   ▶ RESUME
