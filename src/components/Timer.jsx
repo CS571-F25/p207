@@ -268,29 +268,73 @@ function Timer({
               transform: "rotate(-90deg)",
             }}
           >
-            {/* Background circle */}
+            {/* Gradient definitions */}
+            <defs>
+              <linearGradient
+                id="progressGradient"
+                x1="0%"
+                y1="0%"
+                x2="100%"
+                y2="100%"
+              >
+                <stop offset="0%" stopColor={getTimerColor()} />
+                <stop
+                  offset="100%"
+                  stopColor={getTimerColor()}
+                  stopOpacity="0.7"
+                />
+              </linearGradient>
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="4" result="coloredBlur" />
+                <feMerge>
+                  <feMergeNode in="coloredBlur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+
+            {/* Background track circle */}
             <circle
               cx={center}
               cy={center}
               r={radius}
               fill="none"
-              stroke="#f5f5f5"
+              stroke="rgba(0, 0, 0, 0.08)"
               strokeWidth={strokeWidth}
             />
-            {/* Progress circle */}
+
+            {/* Glow layer (beneath progress ring) */}
             <circle
               cx={center}
               cy={center}
               r={radius}
               fill="none"
               stroke={getTimerColor()}
+              strokeWidth={strokeWidth + 2}
+              strokeDasharray={circumference}
+              strokeDashoffset={strokeDashoffset}
+              strokeLinecap="round"
+              opacity="0.3"
+              style={{
+                transition: "stroke-dashoffset 1s linear, stroke 0.3s ease",
+                filter: "blur(8px)",
+              }}
+            />
+
+            {/* Main progress ring with gradient */}
+            <circle
+              cx={center}
+              cy={center}
+              r={radius}
+              fill="none"
+              stroke="url(#progressGradient)"
               strokeWidth={strokeWidth}
               strokeDasharray={circumference}
               strokeDashoffset={strokeDashoffset}
               strokeLinecap="round"
               style={{
                 transition: "stroke-dashoffset 1s linear, stroke 0.3s ease",
-                filter: `drop-shadow(0 0 8px ${getTimerColor()}50)`,
+                filter: `drop-shadow(0 0 12px ${getTimerColor()}60)`,
               }}
             />
           </svg>
