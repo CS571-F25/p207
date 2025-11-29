@@ -14,6 +14,7 @@ function Timer({
   const [isPaused, setIsPaused] = useState(false);
   const [isEditingTime, setIsEditingTime] = useState(false);
   const [editTimeValue, setEditTimeValue] = useState("");
+  const [justCompleted, setJustCompleted] = useState(false);
   const intervalRef = useRef(null);
   const timerFinishedRef = useRef(false);
 
@@ -75,6 +76,10 @@ function Timer({
 
                 setIsRunning(false);
                 setIsPaused(false);
+                setJustCompleted(true);
+
+                // Reset celebration animation after 2 seconds
+                setTimeout(() => setJustCompleted(false), 2000);
 
                 // Timer finished - add notification
                 if (
@@ -138,6 +143,7 @@ function Timer({
     }
     setIsRunning(true);
     setIsPaused(false);
+    setJustCompleted(false);
     timerFinishedRef.current = false; // Reset the flag when starting
   };
 
@@ -219,7 +225,11 @@ function Timer({
       style={{
         border: "none",
         borderRadius: "20px",
-        animation: isRunning ? "pulse 2s infinite" : "none",
+        animation: justCompleted
+          ? "celebrate 0.6s ease-in-out"
+          : isRunning
+          ? "pulse 2s infinite"
+          : "none",
         transition: "all 0.3s ease",
       }}
     >
@@ -256,6 +266,7 @@ function Timer({
             width: size,
             height: size,
             margin: "0 auto",
+            animation: isRunning ? "ring-pulse 3s ease-in-out infinite" : "none",
           }}
         >
           <svg
@@ -386,6 +397,7 @@ function Timer({
                   lineHeight: 1,
                   color: getTimerColor(),
                   cursor: !isRunning && !isPaused ? "pointer" : "default",
+                  animation: isRunning ? "breathe 4s ease-in-out infinite" : "none",
                 }}
               >
                 {String(minutes).padStart(2, "0")}
@@ -535,6 +547,12 @@ function Timer({
               onMouseLeave={(e) => {
                 e.target.style.transform = "translateY(0)";
                 e.target.style.boxShadow = `0 4px 12px ${getTimerColor()}40`;
+              }}
+              onMouseDown={(e) => {
+                e.target.style.animation = "button-press 0.2s ease";
+              }}
+              onMouseUp={(e) => {
+                e.target.style.animation = "none";
               }}
             >
               ▶ START
