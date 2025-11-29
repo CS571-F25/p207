@@ -215,12 +215,10 @@ function Timer({
 
   return (
     <Card
-      className="compact-timer"
+      className="compact-timer timer-card-glass"
       style={{
         border: "none",
-        background: "var(--card-bg)",
         borderRadius: "20px",
-        boxShadow: "var(--card-shadow)",
         animation: isRunning ? "pulse 2s infinite" : "none",
         transition: "all 0.3s ease",
       }}
