@@ -4,7 +4,7 @@ import "./TimerPage.css";
 
 function TimerPage() {
   return (
-    <div className="timer-page">
+    <div className="timer-page" style={{ background: "var(--bg-primary)" }}>
       <Container>
         <div className="timer-hero">
           <h1 className="timer-title">

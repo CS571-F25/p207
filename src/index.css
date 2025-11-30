@@ -85,7 +85,7 @@ h6 {
 }
 
 [data-theme="dark"] .timer-card-glass {
-  background: rgba(22, 27, 34, 0.7) !important;
+  background: #292524 !important;
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -100,7 +100,7 @@ h6 {
   }
 
   [data-theme="dark"] .timer-card-glass {
-    background: rgba(22, 27, 34, 0.95) !important;
+    background: #292524 !important;
   }
 }
 

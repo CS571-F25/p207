@@ -22,36 +22,20 @@ function Timer({
   const currentSeconds = minutes * 60 + seconds;
   const progressPercentage = (currentSeconds / totalSeconds) * 100;
 
-  // Enhanced color palette with 6 ranges
+  // Muted color palette for minimal design
   const COLORS = {
-    emerald: "#10B981",
-    cyan: "#06B6D4",
-    sky: "#0EA5E9",
-    amber: "#F59E0B",
-    orange: "#F97316",
-    rose: "#F43F5E",
+    neutral: "#64748B", // neutral gray (default)
+    amber: "#F59E0B", // amber for <10 min
+    red: "#EF4444", // red for <3 min
   };
 
   /**
-   * Returns the color for the timer based on remaining time percentage.
-   * Uses a 6-color gradient system for visual feedback.
+   * Returns the color for the timer ring.
+   * Uses consistent color for all timers.
    * @returns {string} Hex color code
    */
   const getTimerColor = () => {
-    const color =
-      progressPercentage > 83
-        ? COLORS.emerald // 100-83%: emerald
-        : progressPercentage > 66
-        ? COLORS.cyan // 83-66%: cyan
-        : progressPercentage > 50
-        ? COLORS.sky // 66-50%: sky
-        : progressPercentage > 33
-        ? COLORS.amber // 50-33%: amber
-        : progressPercentage > 16
-        ? COLORS.orange // 33-16%: orange
-        : COLORS.rose; // 16-0%: rose
-
-    return color;
+    return "#64748B"; // Consistent neutral gray for all timers
   };
 
   /**
@@ -318,13 +302,6 @@ function Timer({
                   stopOpacity="0.7"
                 />
               </linearGradient>
-              <filter id="glow">
-                <feGaussianBlur stdDeviation="4" result="coloredBlur" />
-                <feMerge>
-                  <feMergeNode in="coloredBlur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
             </defs>
 
             {/* Background track circle */}
@@ -335,24 +312,6 @@ function Timer({
               fill="none"
               stroke="rgba(0, 0, 0, 0.08)"
               strokeWidth={strokeWidth}
-            />
-
-            {/* Glow layer (beneath progress ring) */}
-            <circle
-              cx={center}
-              cy={center}
-              r={radius}
-              fill="none"
-              stroke={getTimerColor()}
-              strokeWidth={strokeWidth + 2}
-              strokeDasharray={circumference}
-              strokeDashoffset={strokeDashoffset}
-              strokeLinecap="round"
-              opacity="0.3"
-              style={{
-                transition: "stroke-dashoffset 1s linear, stroke 0.3s ease",
-                filter: "blur(8px)",
-              }}
             />
 
             {/* Main progress ring with gradient */}
@@ -368,7 +327,6 @@ function Timer({
               strokeLinecap="round"
               style={{
                 transition: "stroke-dashoffset 1s linear, stroke 0.3s ease",
-                filter: `drop-shadow(0 0 12px ${getTimerColor()}60)`,
               }}
             />
           </svg>
@@ -393,8 +351,8 @@ function Timer({
                 lineHeight: 1,
                 color:
                   document.documentElement.getAttribute("data-theme") === "dark"
-                    ? "#F5F5F4"
-                    : getTimerColor(),
+                    ? "#f0f6fc"
+                    : "#1E293B",
                 animation: isRunning
                   ? "breathe 4s ease-in-out infinite"
                   : "none",
@@ -443,7 +401,7 @@ function Timer({
                   (e.target.style.backgroundColor = "transparent")
                 }
               >
-                {initialMinutes} min
+                {initialMinutes} <span className="timer-min-label">min</span>
               </div>
             )}
           </div>
@@ -462,21 +420,23 @@ function Timer({
                 height: "56px",
                 textTransform: "uppercase",
                 letterSpacing: "1.5px",
-                background: "#10B981",
+                background: "#60A5FA",
                 border: "none",
                 borderRadius: "12px",
                 color: "#FFFFFF",
                 cursor: "pointer",
                 transition: "all 0.3s ease",
-                boxShadow: "0 4px 12px rgba(16, 185, 129, 0.4)",
+                boxShadow: "0 4px 12px rgba(96, 165, 250, 0.3)",
               }}
               onMouseEnter={(e) => {
+                e.target.style.background = "#3B82F6";
                 e.target.style.transform = "translateY(-2px)";
-                e.target.style.boxShadow = "0 6px 20px rgba(16, 185, 129, 0.6)";
+                e.target.style.boxShadow = "0 6px 20px rgba(59, 130, 246, 0.4)";
               }}
               onMouseLeave={(e) => {
+                e.target.style.background = "#60A5FA";
                 e.target.style.transform = "translateY(0)";
-                e.target.style.boxShadow = "0 4px 12px rgba(16, 185, 129, 0.4)";
+                e.target.style.boxShadow = "0 4px 12px rgba(96, 165, 250, 0.3)";
               }}
             >
               ▶ START
@@ -491,7 +451,7 @@ function Timer({
                     fontSize: "0.9rem",
                     fontWeight: "700",
                     padding: "10px",
-                    background: `linear-gradient(135deg, ${COLORS.amber} 0%, #D97706 100%)`,
+                    background: "#60A5FA",
                     border: "none",
                     borderRadius: "12px",
                     color: "#FFFFFF",
@@ -499,7 +459,19 @@ function Timer({
                     transition: "all 0.3s ease",
                     textTransform: "uppercase",
                     letterSpacing: "1px",
-                    boxShadow: `0 2px 8px ${COLORS.amber}40`,
+                    boxShadow: "0 2px 8px rgba(96, 165, 250, 0.3)",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = "#3B82F6";
+                    e.target.style.transform = "translateY(-2px)";
+                    e.target.style.boxShadow =
+                      "0 4px 12px rgba(59, 130, 246, 0.4)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = "#60A5FA";
+                    e.target.style.transform = "translateY(0)";
+                    e.target.style.boxShadow =
+                      "0 2px 8px rgba(96, 165, 250, 0.3)";
                   }}
                 >
                   ⏸ PAUSE
@@ -512,7 +484,7 @@ function Timer({
                     fontSize: "0.9rem",
                     fontWeight: "700",
                     padding: "10px",
-                    background: getTimerGradient(),
+                    background: "#60A5FA",
                     border: "none",
                     borderRadius: "12px",
                     color: "#FFFFFF",
@@ -520,7 +492,19 @@ function Timer({
                     transition: "all 0.3s ease",
                     textTransform: "uppercase",
                     letterSpacing: "1px",
-                    boxShadow: `0 2px 8px ${getTimerColor()}40`,
+                    boxShadow: "0 2px 8px rgba(96, 165, 250, 0.3)",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = "#3B82F6";
+                    e.target.style.transform = "translateY(-2px)";
+                    e.target.style.boxShadow =
+                      "0 4px 12px rgba(59, 130, 246, 0.4)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = "#60A5FA";
+                    e.target.style.transform = "translateY(0)";
+                    e.target.style.boxShadow =
+                      "0 2px 8px rgba(96, 165, 250, 0.3)";
                   }}
                 >
                   ▶ RESUME
@@ -532,14 +516,27 @@ function Timer({
                   fontSize: "0.9rem",
                   fontWeight: "700",
                   padding: "10px 16px",
-                  background: "var(--input-bg)",
+                  background: "#60A5FA",
                   border: "none",
                   borderRadius: "12px",
-                  color: "var(--text-secondary)",
+                  color: "#FFFFFF",
                   cursor: "pointer",
                   transition: "all 0.3s ease",
                   textTransform: "uppercase",
                   letterSpacing: "1px",
+                  boxShadow: "0 2px 8px rgba(96, 165, 250, 0.3)",
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = "#3B82F6";
+                  e.target.style.transform = "translateY(-2px)";
+                  e.target.style.boxShadow =
+                    "0 4px 12px rgba(59, 130, 246, 0.4)";
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = "#60A5FA";
+                  e.target.style.transform = "translateY(0)";
+                  e.target.style.boxShadow =
+                    "0 2px 8px rgba(96, 165, 250, 0.3)";
                 }}
               >
                 ↺ RESET
@@ -552,10 +549,9 @@ function Timer({
         {!isRunning && !isPaused && (
           <div className="w-100">
             <div
-              className="text-center mb-2"
+              className="text-center mb-2 timer-presets-label"
               style={{
                 fontSize: "0.75rem",
-                color: "var(--text-muted)",
                 fontWeight: "600",
                 textTransform: "uppercase",
                 letterSpacing: "1px",
@@ -577,9 +573,9 @@ function Timer({
                     fontWeight: "700",
                     borderRadius: "12px",
                     flex: 1,
-                    background: gradient,
-                    border: "none",
-                    color: "#FFFFFF",
+                    background: "#F1F5F9",
+                    border: "1px solid #E2E8F0",
+                    color: "#475569",
                     padding: "10px 8px",
                     cursor: "pointer",
                     transition: "all 0.2s ease",
@@ -587,18 +583,19 @@ function Timer({
                     flexDirection: "column",
                     alignItems: "center",
                     gap: "4px",
-                    boxShadow: `0 2px 8px ${color}30`,
+                    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.05)",
                   }}
                   onMouseEnter={(e) => {
+                    e.target.style.background = "#E2E8F0";
                     e.target.style.transform = "translateY(-2px) scale(1.05)";
-                    e.target.style.boxShadow = `0 4px 12px ${color}50`;
+                    e.target.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.1)";
                   }}
                   onMouseLeave={(e) => {
+                    e.target.style.background = "#F1F5F9";
                     e.target.style.transform = "translateY(0) scale(1)";
-                    e.target.style.boxShadow = `0 2px 8px ${color}30`;
+                    e.target.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.05)";
                   }}
                 >
-                  <span style={{ fontSize: "1.2rem" }}>{icon}</span>
                   <span style={{ fontSize: "0.85rem", fontWeight: "800" }}>
                     {time}m
                   </span>
