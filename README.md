@@ -1,6 +1,6 @@
 # Todo Timer App ⏰
 
-A modern, productivity-focused web application that combines task management with Pomodoro-style time tracking to help you stay focused and organized.
+A modern, productivity-focused web application that combines task management with Pomodoro-style time tracking and streak visualization to help you stay focused and organized.
 
 ## Features
 
@@ -14,6 +14,7 @@ A modern, productivity-focused web application that combines task management wit
   - Deep Work (45 minutes) 🔥
 - **Visual Progress**: Circular progress ring with smooth animations
 - **Notifications**: Browser notifications when timer completes
+- **Persistent Timer**: Timer continues running when navigating between pages
 - **Dark Mode Support**: Seamless theme switching
 
 ### 📝 Todo List
@@ -21,7 +22,19 @@ A modern, productivity-focused web application that combines task management wit
 - **Task Management**: Add, complete, and delete tasks
 - **Progress Tracking**: Visual progress indicator showing completed vs total tasks
 - **Organized Display**: Active and completed tasks shown separately
-- **Persistent State**: Tasks remain during your session
+- **Persistent Storage**: Tasks are saved to localStorage and persist across sessions
+- **Timer Integration**: View top 3 tasks alongside the timer for focused productivity
+
+### 🔥 Streak Tracking
+
+- **GitHub-Style Calendar**: Visual contribution calendar showing 365 days of activity
+- **Daily Completions**: Automatically tracks completed timer sessions
+- **Streak Statistics**:
+  - Current streak (consecutive days)
+  - Longest streak ever
+  - Total completed sessions
+- **Color Intensity**: Visual heat map showing activity levels (0, 1-2, 3-5, 6+ completions)
+- **Persistent Data**: Streak data saved to localStorage
 
 ### 🌙 Dark Mode
 
@@ -88,8 +101,21 @@ This project is configured for deployment to GitHub Pages. The build output goes
 ## Usage
 
 1. **Home Page**: View inspirational quotes and navigate to timer or todo features
-2. **Timer Page**: Set your desired focus duration and start the timer
+2. **Timer Page**: Set your desired focus duration and start the timer. View your top 3 tasks alongside the timer.
 3. **Todo Page**: Add tasks, mark them complete, and track your progress
+4. **Streak Page**: View your GitHub-style contribution calendar and track your productivity streaks
+
+## Architecture
+
+The app uses React Context for global state management:
+
+- **TimerContext**: Manages timer state that persists across navigation
+- **TodoContext**: Manages todo list with localStorage persistence
+- **StreakContext**: Tracks daily completions with localStorage persistence
+
+Services are abstracted for future database migration:
+
+- **streakService.js**: Handles streak data persistence (localStorage now, easily swappable to Firebase/Supabase)
 
 ## Browser Notifications
 
