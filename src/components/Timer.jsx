@@ -49,11 +49,15 @@ function Timer({
   };
 
   const getButtonShadow = () => {
-    return isDarkMode ? "0 2px 8px rgba(100, 116, 139, 0.3)" : "0 2px 8px rgba(96, 165, 250, 0.3)";
+    return isDarkMode
+      ? "0 2px 8px rgba(100, 116, 139, 0.3)"
+      : "0 2px 8px rgba(96, 165, 250, 0.3)";
   };
 
   const getButtonHoverShadow = () => {
-    return isDarkMode ? "0 4px 12px rgba(71, 85, 105, 0.4)" : "0 4px 12px rgba(59, 130, 246, 0.4)";
+    return isDarkMode
+      ? "0 4px 12px rgba(71, 85, 105, 0.4)"
+      : "0 4px 12px rgba(59, 130, 246, 0.4)";
   };
 
   const getPresetBackground = () => {
@@ -73,11 +77,15 @@ function Timer({
   };
 
   const getPresetShadow = () => {
-    return isDarkMode ? "0 2px 8px rgba(100, 116, 139, 0.3)" : "0 2px 4px rgba(0, 0, 0, 0.05)";
+    return isDarkMode
+      ? "0 2px 8px rgba(100, 116, 139, 0.3)"
+      : "0 2px 4px rgba(0, 0, 0, 0.05)";
   };
 
   const getPresetHoverShadow = () => {
-    return isDarkMode ? "0 4px 12px rgba(71, 85, 105, 0.4)" : "0 4px 8px rgba(0, 0, 0, 0.1)";
+    return isDarkMode
+      ? "0 4px 12px rgba(71, 85, 105, 0.4)"
+      : "0 4px 8px rgba(0, 0, 0, 0.1)";
   };
 
   const getBackgroundTrackColor = () => {
