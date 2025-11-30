@@ -121,27 +121,27 @@
 
 /* Navigation link styling */
 .nav-link-custom {
-  color: #374151 !important;
+  color: #64748B !important;
   font-weight: 500 !important;
   letter-spacing: 0.025em !important;
   padding: 8px 16px !important;
-  margin: 0 4px !important;
+  margin: 0 12px !important;
   border-radius: 8px !important;
   transition: all 0.2s ease !important;
   text-decoration: none !important;
   position: relative;
+  border-bottom: 2px solid transparent;
 }
 
 .nav-link-custom:hover {
-  background-color: rgba(0, 0, 0, 0.05) !important;
-  color: #1f2937 !important;
+  color: #0F172A !important;
   transform: translateY(-1px);
 }
 
 .nav-link-custom.active {
-  background-color: rgba(0, 0, 0, 0.1) !important;
-  color: #111827 !important;
+  color: #0F172A !important;
   font-weight: 600 !important;
+  border-bottom: 2px solid #0F172A;
 }
 
 .form-control:focus {
@@ -266,7 +266,8 @@
 
 /* Timer-specific animations */
 @keyframes ring-pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
   }
@@ -277,7 +278,8 @@
 }
 
 @keyframes breathe {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {
@@ -298,7 +300,8 @@
 }
 
 @keyframes celebrate {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1) rotate(0deg);
   }
   25% {
