@@ -1,12 +1,19 @@
 import { useState } from "react";
 import { FiTrash2 } from "react-icons/fi";
+import { useTodo } from "../context/TodoContext";
 
 function TodoList() {
-  const [todos, setTodos] = useState([
-    { id: 1, text: "Create todo timer app", completed: false },
-    { id: 2, text: "Add timer functionality", completed: false },
-    { id: 3, text: "Deploy to GitHub Pages", completed: false },
-  ]);
+  const {
+    todos,
+    activeTodos,
+    completedTodos,
+    completedCount,
+    totalCount,
+    addTodo,
+    toggleTodo,
+    deleteTodo,
+  } = useTodo();
+
   const [newTodo, setNewTodo] = useState("");
 
   // Custom color palette (matching Timer)
@@ -20,32 +27,18 @@ function TodoList() {
   const handleAddTodo = (e) => {
     e.preventDefault();
     if (newTodo.trim()) {
-      const todo = {
-        id: Date.now(),
-        text: newTodo,
-        completed: false,
-      };
-      setTodos([...todos, todo]);
+      addTodo(newTodo);
       setNewTodo("");
     }
   };
 
   const handleToggleTodo = (id) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
+    toggleTodo(id);
   };
 
   const handleDeleteTodo = (id) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+    deleteTodo(id);
   };
-
-  const completedCount = todos.filter((t) => t.completed).length;
-  const totalCount = todos.length;
-  const activeTodos = todos.filter((t) => !t.completed);
-  const completedTodos = todos.filter((t) => t.completed);
 
   return (
     <div
