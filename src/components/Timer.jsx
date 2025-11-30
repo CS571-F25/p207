@@ -1,23 +1,24 @@
-import { useState, useEffect, useRef } from "react";
-import { Card, Button, ButtonGroup } from "react-bootstrap";
+import { useState, useEffect } from "react";
+import { Card } from "react-bootstrap";
+import { useTimer } from "../context/TimerContext";
 
-function Timer({
-  compact = false,
-  showHero = false,
-  initialTime = 25,
-  onTimerComplete = null,
-}) {
-  const [initialMinutes, setInitialMinutes] = useState(initialTime);
-  const [minutes, setMinutes] = useState(initialTime);
-  const [seconds, setSeconds] = useState(0);
-  const [isRunning, setIsRunning] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
+function Timer({ compact = false, showHero = false, onTimerComplete = null }) {
+  const {
+    initialMinutes,
+    minutes,
+    seconds,
+    isRunning,
+    isPaused,
+    justCompleted,
+    handleStart,
+    handlePause,
+    handleReset,
+    setTime,
+  } = useTimer();
+
   const [isEditingTime, setIsEditingTime] = useState(false);
   const [editTimeValue, setEditTimeValue] = useState("");
-  const [justCompleted, setJustCompleted] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const intervalRef = useRef(null);
-  const timerFinishedRef = useRef(false);
 
   const totalSeconds = initialMinutes * 60;
   const currentSeconds = minutes * 60 + seconds;
@@ -168,112 +169,6 @@ function Timer({
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    if (isRunning) {
-      intervalRef.current = setInterval(() => {
-        setSeconds((prevSeconds) => {
-          if (prevSeconds === 0) {
-            setMinutes((prevMinutes) => {
-              if (prevMinutes === 0) {
-                // Timer finished - clear interval immediately
-                if (intervalRef.current) {
-                  clearInterval(intervalRef.current);
-                }
-
-                setIsRunning(false);
-                setIsPaused(false);
-                setJustCompleted(true);
-
-                // Reset celebration animation after 2 seconds
-                setTimeout(() => setJustCompleted(false), 2000);
-
-                // Timer finished - add notification
-                if (
-                  "Notification" in window &&
-                  Notification.permission === "granted"
-                ) {
-                  new Notification("Timer Finished!", {
-                    body: "Your focus session is complete. Take a break!",
-                    icon: "/vite.svg",
-                  });
-                } else if (
-                  "Notification" in window &&
-                  Notification.permission !== "denied"
-                ) {
-                  Notification.requestPermission().then((permission) => {
-                    if (permission === "granted") {
-                      new Notification("Timer Finished!", {
-                        body: "Your focus session is complete. Take a break!",
-                        icon: "/vite.svg",
-                      });
-                    }
-                  });
-                }
-                // Fallback alert
-                alert("Timer finished! Great job on your focus session.");
-
-                // Call optional completion callback
-                if (onTimerComplete) {
-                  onTimerComplete();
-                }
-
-                // Reset to initial time
-                setTimeout(() => setSeconds(0), 0);
-                return initialMinutes;
-              }
-              return prevMinutes - 1;
-            });
-            return 59;
-          }
-          return prevSeconds - 1;
-        });
-      }, 1000);
-    } else {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    }
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, [isRunning, onTimerComplete, initialMinutes]);
-
-  const handleStart = () => {
-    // If starting from X:00, adjust to (X-1):59 to prevent immediate decrement
-    if (seconds === 0 && minutes > 0) {
-      setMinutes((prev) => prev - 1);
-      setSeconds(59);
-    }
-    setIsRunning(true);
-    setIsPaused(false);
-    setJustCompleted(false);
-    timerFinishedRef.current = false; // Reset the flag when starting
-  };
-
-  const handlePause = () => {
-    setIsRunning(false);
-    setIsPaused(true);
-  };
-
-  const handleReset = () => {
-    setIsRunning(false);
-    setIsPaused(false);
-    setMinutes(initialMinutes);
-    setSeconds(0);
-  };
-
-  const adjustTime = (amount) => {
-    if (!isRunning && !isPaused) {
-      const newMinutes = Math.max(1, Math.min(60, initialMinutes + amount));
-      setInitialMinutes(newMinutes);
-      setMinutes(newMinutes);
-      setSeconds(0);
-    }
-  };
-
   // Custom time input handlers
   const handleTimeClick = () => {
     if (!isRunning && !isPaused) {
@@ -308,9 +203,7 @@ function Timer({
     if (!isNaN(numValue) && numValue >= 1) {
       // Cap at 60 minutes
       const clampedValue = Math.min(numValue, 60);
-      setInitialMinutes(clampedValue);
-      setMinutes(clampedValue);
-      setSeconds(0);
+      setTime(clampedValue);
     }
     setIsEditingTime(false);
     setEditTimeValue("");
@@ -632,11 +525,7 @@ function Timer({
               {PRESETS.map(({ time, label, icon, gradient, color }) => (
                 <button
                   key={time}
-                  onClick={() => {
-                    setInitialMinutes(time);
-                    setMinutes(time);
-                    setSeconds(0);
-                  }}
+                  onClick={() => setTime(time)}
                   style={{
                     fontSize: "0.75rem",
                     fontWeight: "700",

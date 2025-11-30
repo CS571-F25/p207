@@ -4,11 +4,12 @@ import Home from "./pages/Home";
 import TimerPage from "./pages/TimerPage";
 import TodoPage from "./pages/TodoPage";
 import DarkModeToggle from "./components/DarkModeToggle";
+import { TimerProvider } from "./context/TimerContext";
 import "./App.css";
 
 function App() {
   return (
-    <>
+    <TimerProvider>
       <Navbar
         expand="lg"
         className="navbar-custom"
@@ -49,7 +50,7 @@ function App() {
         <Route path="/timer" element={<TimerPage />} />
         <Route path="/todo" element={<TodoPage />} />
       </Routes>
-    </>
+    </TimerProvider>
   );
 }
 
