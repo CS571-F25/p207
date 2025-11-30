@@ -9,6 +9,13 @@ import {
 
 const TimerContext = createContext(null);
 
+// Callback ref to be set by StreakProvider
+let onTimerCompleteCallback = null;
+
+export function setOnTimerComplete(callback) {
+  onTimerCompleteCallback = callback;
+}
+
 export function TimerProvider({ children }) {
   const [initialMinutes, setInitialMinutes] = useState(25);
   const [minutes, setMinutes] = useState(25);
@@ -63,6 +70,11 @@ export function TimerProvider({ children }) {
                 }
                 // Fallback alert
                 alert("Timer finished! Great job on your focus session.");
+
+                // Trigger streak increment
+                if (onTimerCompleteCallback) {
+                  onTimerCompleteCallback();
+                }
 
                 // Reset to initial time
                 setTimeout(() => setSeconds(0), 0);
