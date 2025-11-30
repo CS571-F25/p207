@@ -1,7 +1,6 @@
 import { Container } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import Quotes from "../components/Quotes";
-import DarkModeToggle from "../components/DarkModeToggle";
 
 function Home() {
   const navigate = useNavigate();
@@ -47,8 +46,6 @@ function Home() {
             </button>
           </div>
         </div>
-
-        <DarkModeToggle />
 
         <Quotes />
       </Container>
