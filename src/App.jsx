@@ -11,8 +11,9 @@ function App() {
       <Navbar
         expand="lg"
         style={{
-          background:
-            "linear-gradient(135deg, #06B6D4 0%, #14B8A6 50%, #10B981 100%)",
+          background: "#FFFFFF",
+          boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+          borderBottom: "1px solid #E5E7EB",
         }}
       >
         <Container>
@@ -25,39 +26,21 @@ function App() {
               <Nav.Link
                 as={NavLink}
                 to="/"
-                style={{
-                  fontWeight: "bold",
-                  border: "1px solid rgba(0,0,0,0.2)",
-                  borderRadius: "20px",
-                  padding: "5px 15px",
-                  margin: "0 5px",
-                }}
+                className="nav-link-custom"
               >
                 Home
               </Nav.Link>
               <Nav.Link
                 as={NavLink}
                 to="/timer"
-                style={{
-                  fontWeight: "bold",
-                  border: "1px solid rgba(0,0,0,0.2)",
-                  borderRadius: "20px",
-                  padding: "5px 15px",
-                  margin: "0 5px",
-                }}
+                className="nav-link-custom"
               >
                 Timer
               </Nav.Link>
               <Nav.Link
                 as={NavLink}
                 to="/todo"
-                style={{
-                  fontWeight: "bold",
-                  border: "1px solid rgba(0,0,0,0.2)",
-                  borderRadius: "20px",
-                  padding: "5px 15px",
-                  margin: "0 5px",
-                }}
+                className="nav-link-custom"
               >
                 Todo List
               </Nav.Link>

@@ -119,6 +119,31 @@
   color: var(--text-primary) !important;
 }
 
+/* Navigation link styling */
+.nav-link-custom {
+  color: #374151 !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.025em !important;
+  padding: 8px 16px !important;
+  margin: 0 4px !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
+  text-decoration: none !important;
+  position: relative;
+}
+
+.nav-link-custom:hover {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+  color: #1f2937 !important;
+  transform: translateY(-1px);
+}
+
+.nav-link-custom.active {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+  color: #111827 !important;
+  font-weight: 600 !important;
+}
+
 .form-control:focus {
   border-color: #667eea !important;
   box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15) !important;
