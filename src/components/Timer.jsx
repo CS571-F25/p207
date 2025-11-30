@@ -15,6 +15,7 @@ function Timer({
   const [isEditingTime, setIsEditingTime] = useState(false);
   const [editTimeValue, setEditTimeValue] = useState("");
   const [justCompleted, setJustCompleted] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const intervalRef = useRef(null);
   const timerFinishedRef = useRef(false);
 
@@ -35,7 +36,56 @@ function Timer({
    * @returns {string} Hex color code
    */
   const getTimerColor = () => {
-    return "#64748B"; // Consistent neutral gray for all timers
+    // Use lighter color in dark mode for visibility
+    return isDarkMode ? "#CBD5E1" : "#64748B"; // Consistent neutral gray for all timers
+  };
+
+  const getButtonBackground = () => {
+    return isDarkMode ? "#64748B" : "#60A5FA"; // Muted gray in dark mode, blue in light mode
+  };
+
+  const getButtonHoverBackground = () => {
+    return isDarkMode ? "#475569" : "#3B82F6"; // Darker gray in dark mode, darker blue in light mode
+  };
+
+  const getButtonShadow = () => {
+    return isDarkMode ? "0 2px 8px rgba(100, 116, 139, 0.3)" : "0 2px 8px rgba(96, 165, 250, 0.3)";
+  };
+
+  const getButtonHoverShadow = () => {
+    return isDarkMode ? "0 4px 12px rgba(71, 85, 105, 0.4)" : "0 4px 12px rgba(59, 130, 246, 0.4)";
+  };
+
+  const getPresetBackground = () => {
+    return isDarkMode ? "#64748B" : "#F1F5F9";
+  };
+
+  const getPresetBorder = () => {
+    return isDarkMode ? "none" : "1px solid #E2E8F0";
+  };
+
+  const getPresetColor = () => {
+    return isDarkMode ? "#FFFFFF" : "#475569";
+  };
+
+  const getPresetHoverBackground = () => {
+    return isDarkMode ? "#475569" : "#E2E8F0";
+  };
+
+  const getPresetShadow = () => {
+    return isDarkMode ? "0 2px 8px rgba(100, 116, 139, 0.3)" : "0 2px 4px rgba(0, 0, 0, 0.05)";
+  };
+
+  const getPresetHoverShadow = () => {
+    return isDarkMode ? "0 4px 12px rgba(71, 85, 105, 0.4)" : "0 4px 8px rgba(0, 0, 0, 0.1)";
+  };
+
+  const getBackgroundTrackColor = () => {
+    return isDarkMode ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.08)";
+  };
+
+  const getTimerDisplayColor = () => {
+    return isDarkMode ? "#f0f6fc" : "#1E293B";
   };
 
   /**
@@ -89,6 +139,26 @@ function Timer({
       gradient: "linear-gradient(135deg, #EF4444 0%, #DC2626 100%)",
     },
   ];
+
+  // Watch for theme changes
+  useEffect(() => {
+    const checkTheme = () => {
+      const theme = document.documentElement.getAttribute("data-theme");
+      setIsDarkMode(theme === "dark");
+    };
+
+    // Check initial theme
+    checkTheme();
+
+    // Watch for theme changes
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (isRunning) {
@@ -310,7 +380,7 @@ function Timer({
               cy={center}
               r={radius}
               fill="none"
-              stroke="rgba(0, 0, 0, 0.08)"
+              stroke={getBackgroundTrackColor()}
               strokeWidth={strokeWidth}
             />
 
@@ -349,10 +419,7 @@ function Timer({
                 fontFamily: "'Inter', sans-serif",
                 letterSpacing: "1px",
                 lineHeight: 1,
-                color:
-                  document.documentElement.getAttribute("data-theme") === "dark"
-                    ? "#f0f6fc"
-                    : "#1E293B",
+                color: getTimerDisplayColor(),
                 animation: isRunning
                   ? "breathe 4s ease-in-out infinite"
                   : "none",
@@ -420,23 +487,23 @@ function Timer({
                 height: "56px",
                 textTransform: "uppercase",
                 letterSpacing: "1.5px",
-                background: "#60A5FA",
+                background: getButtonBackground(),
                 border: "none",
                 borderRadius: "12px",
                 color: "#FFFFFF",
                 cursor: "pointer",
                 transition: "all 0.3s ease",
-                boxShadow: "0 4px 12px rgba(96, 165, 250, 0.3)",
+                boxShadow: getButtonShadow(),
               }}
               onMouseEnter={(e) => {
-                e.target.style.background = "#3B82F6";
+                e.target.style.background = getButtonHoverBackground();
                 e.target.style.transform = "translateY(-2px)";
-                e.target.style.boxShadow = "0 6px 20px rgba(59, 130, 246, 0.4)";
+                e.target.style.boxShadow = getButtonHoverShadow();
               }}
               onMouseLeave={(e) => {
-                e.target.style.background = "#60A5FA";
+                e.target.style.background = getButtonBackground();
                 e.target.style.transform = "translateY(0)";
-                e.target.style.boxShadow = "0 4px 12px rgba(96, 165, 250, 0.3)";
+                e.target.style.boxShadow = getButtonShadow();
               }}
             >
               ▶ START
@@ -451,7 +518,7 @@ function Timer({
                     fontSize: "0.9rem",
                     fontWeight: "700",
                     padding: "10px",
-                    background: "#60A5FA",
+                    background: getButtonBackground(),
                     border: "none",
                     borderRadius: "12px",
                     color: "#FFFFFF",
@@ -459,19 +526,17 @@ function Timer({
                     transition: "all 0.3s ease",
                     textTransform: "uppercase",
                     letterSpacing: "1px",
-                    boxShadow: "0 2px 8px rgba(96, 165, 250, 0.3)",
+                    boxShadow: getButtonShadow(),
                   }}
                   onMouseEnter={(e) => {
-                    e.target.style.background = "#3B82F6";
+                    e.target.style.background = getButtonHoverBackground();
                     e.target.style.transform = "translateY(-2px)";
-                    e.target.style.boxShadow =
-                      "0 4px 12px rgba(59, 130, 246, 0.4)";
+                    e.target.style.boxShadow = getButtonHoverShadow();
                   }}
                   onMouseLeave={(e) => {
-                    e.target.style.background = "#60A5FA";
+                    e.target.style.background = getButtonBackground();
                     e.target.style.transform = "translateY(0)";
-                    e.target.style.boxShadow =
-                      "0 2px 8px rgba(96, 165, 250, 0.3)";
+                    e.target.style.boxShadow = getButtonShadow();
                   }}
                 >
                   ⏸ PAUSE
@@ -484,7 +549,7 @@ function Timer({
                     fontSize: "0.9rem",
                     fontWeight: "700",
                     padding: "10px",
-                    background: "#60A5FA",
+                    background: getButtonBackground(),
                     border: "none",
                     borderRadius: "12px",
                     color: "#FFFFFF",
@@ -492,19 +557,17 @@ function Timer({
                     transition: "all 0.3s ease",
                     textTransform: "uppercase",
                     letterSpacing: "1px",
-                    boxShadow: "0 2px 8px rgba(96, 165, 250, 0.3)",
+                    boxShadow: getButtonShadow(),
                   }}
                   onMouseEnter={(e) => {
-                    e.target.style.background = "#3B82F6";
+                    e.target.style.background = getButtonHoverBackground();
                     e.target.style.transform = "translateY(-2px)";
-                    e.target.style.boxShadow =
-                      "0 4px 12px rgba(59, 130, 246, 0.4)";
+                    e.target.style.boxShadow = getButtonHoverShadow();
                   }}
                   onMouseLeave={(e) => {
-                    e.target.style.background = "#60A5FA";
+                    e.target.style.background = getButtonBackground();
                     e.target.style.transform = "translateY(0)";
-                    e.target.style.boxShadow =
-                      "0 2px 8px rgba(96, 165, 250, 0.3)";
+                    e.target.style.boxShadow = getButtonShadow();
                   }}
                 >
                   ▶ RESUME
@@ -516,7 +579,7 @@ function Timer({
                   fontSize: "0.9rem",
                   fontWeight: "700",
                   padding: "10px 16px",
-                  background: "#60A5FA",
+                  background: getButtonBackground(),
                   border: "none",
                   borderRadius: "12px",
                   color: "#FFFFFF",
@@ -524,22 +587,20 @@ function Timer({
                   transition: "all 0.3s ease",
                   textTransform: "uppercase",
                   letterSpacing: "1px",
-                  boxShadow: "0 2px 8px rgba(96, 165, 250, 0.3)",
+                  boxShadow: getButtonShadow(),
                 }}
                 onMouseEnter={(e) => {
-                  e.target.style.background = "#3B82F6";
+                  e.target.style.background = getButtonHoverBackground();
                   e.target.style.transform = "translateY(-2px)";
-                  e.target.style.boxShadow =
-                    "0 4px 12px rgba(59, 130, 246, 0.4)";
+                  e.target.style.boxShadow = getButtonHoverShadow();
                 }}
                 onMouseLeave={(e) => {
-                  e.target.style.background = "#60A5FA";
+                  e.target.style.background = getButtonBackground();
                   e.target.style.transform = "translateY(0)";
-                  e.target.style.boxShadow =
-                    "0 2px 8px rgba(96, 165, 250, 0.3)";
+                  e.target.style.boxShadow = getButtonShadow();
                 }}
               >
-                ↺ RESET
+                🔄 RESET
               </button>
             </div>
           )}
@@ -573,9 +634,9 @@ function Timer({
                     fontWeight: "700",
                     borderRadius: "12px",
                     flex: 1,
-                    background: "#F1F5F9",
-                    border: "1px solid #E2E8F0",
-                    color: "#475569",
+                    background: getPresetBackground(),
+                    border: getPresetBorder(),
+                    color: getPresetColor(),
                     padding: "10px 8px",
                     cursor: "pointer",
                     transition: "all 0.2s ease",
@@ -583,17 +644,17 @@ function Timer({
                     flexDirection: "column",
                     alignItems: "center",
                     gap: "4px",
-                    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.05)",
+                    boxShadow: getPresetShadow(),
                   }}
                   onMouseEnter={(e) => {
-                    e.target.style.background = "#E2E8F0";
+                    e.target.style.background = getPresetHoverBackground();
                     e.target.style.transform = "translateY(-2px) scale(1.05)";
-                    e.target.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.1)";
+                    e.target.style.boxShadow = getPresetHoverShadow();
                   }}
                   onMouseLeave={(e) => {
-                    e.target.style.background = "#F1F5F9";
+                    e.target.style.background = getPresetBackground();
                     e.target.style.transform = "translateY(0) scale(1)";
-                    e.target.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.05)";
+                    e.target.style.boxShadow = getPresetShadow();
                   }}
                 >
                   <span style={{ fontSize: "0.85rem", fontWeight: "800" }}>

@@ -257,11 +257,12 @@
 
 [data-theme="dark"] .timer-input {
   color: #f0f6fc !important;
+  background: rgba(100, 116, 139, 0.1) !important;
   border-color: rgba(139, 148, 158, 0.3) !important;
 }
 
 [data-theme="dark"] .timer-input:hover {
-  background-color: rgba(245, 245, 244, 0.1) !important;
+  background-color: rgba(100, 116, 139, 0.2) !important;
 }
 
 /* Timer display styling */
