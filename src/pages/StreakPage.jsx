@@ -239,7 +239,7 @@ function StreakPage() {
             overflowX: "auto",
           }}
         >
-          <h3
+          <h2
             style={{
               fontSize: "1rem",
               fontWeight: "700",
@@ -250,7 +250,7 @@ function StreakPage() {
             }}
           >
             {totalCompletions} focus sessions in the last year
-          </h3>
+          </h2>
 
           <div style={{ display: "flex", gap: "4px" }}>
             {/* Day labels */}

@@ -120,6 +120,7 @@ function TodoList() {
             value={newTodo}
             onChange={(e) => setNewTodo(e.target.value)}
             placeholder="What needs to be done?"
+            aria-label="Add new task"
             style={{
               flex: 1,
               padding: "14px 18px",
@@ -275,6 +276,7 @@ function TodoList() {
                         type="checkbox"
                         checked={false}
                         onChange={() => handleToggleTodo(todo.id)}
+                        aria-label={`Mark ${todo.text} as complete`}
                         style={{
                           width: "20px",
                           height: "20px",
@@ -288,6 +290,7 @@ function TodoList() {
                           value={editText}
                           onChange={(e) => setEditText(e.target.value)}
                           onKeyDown={handleEditKeyPress}
+                          aria-label="Edit task text"
                           style={{
                             flex: 1,
                             padding: "8px 12px",
@@ -469,6 +472,7 @@ function TodoList() {
                         type="checkbox"
                         checked={true}
                         onChange={() => handleToggleTodo(todo.id)}
+                        aria-label={`Mark ${todo.text} as incomplete`}
                         style={{
                           width: "20px",
                           height: "20px",
@@ -482,6 +486,7 @@ function TodoList() {
                           value={editText}
                           onChange={(e) => setEditText(e.target.value)}
                           onKeyDown={handleEditKeyPress}
+                          aria-label="Edit completed task text"
                           style={{
                             flex: 1,
                             padding: "8px 12px",

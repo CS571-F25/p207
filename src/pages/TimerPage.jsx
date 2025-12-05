@@ -136,6 +136,7 @@ function TimerPage() {
                         type="checkbox"
                         checked={task.completed}
                         onChange={() => toggleTodo(task.id)}
+                        aria-label={`Toggle task: ${task.text}`}
                         style={{
                           width: "18px",
                           height: "18px",

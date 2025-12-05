@@ -394,6 +394,7 @@ function Timer({ compact = false, showHero = false, onTimerComplete = null }) {
                     onKeyDown={handleTimeEditKeyDown}
                     autoFocus
                     placeholder="0"
+                    aria-label="Hours"
                     className="timer-input"
                     style={{ width: "60px !important" }}
                   />
@@ -410,6 +411,7 @@ function Timer({ compact = false, showHero = false, onTimerComplete = null }) {
                     onChange={handleMinutesEdit}
                     onKeyDown={handleTimeEditKeyDown}
                     placeholder="0"
+                    aria-label="Minutes"
                     className="timer-input"
                     style={{ width: "60px !important" }}
                   />
@@ -426,6 +428,7 @@ function Timer({ compact = false, showHero = false, onTimerComplete = null }) {
                     onChange={handleSecondsEdit}
                     onKeyDown={handleTimeEditKeyDown}
                     placeholder="0"
+                    aria-label="Seconds"
                     className="timer-input"
                     style={{ width: "60px !important" }}
                   />
@@ -459,6 +462,15 @@ function Timer({ compact = false, showHero = false, onTimerComplete = null }) {
             ) : (
               <div
                 onClick={handleTimeClick}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    handleTimeClick();
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                aria-label="Click to edit timer duration"
                 style={{
                   cursor: "pointer",
                   border: "none",
