@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FiTrash2 } from "react-icons/fi";
+import { FiTrash2, FiEdit2, FiCheck, FiX } from "react-icons/fi";
 import { useTodo } from "../context/TodoContext";
 
 function TodoList() {
@@ -12,9 +12,12 @@ function TodoList() {
     addTodo,
     toggleTodo,
     deleteTodo,
+    editTodo,
   } = useTodo();
 
   const [newTodo, setNewTodo] = useState("");
+  const [editingId, setEditingId] = useState(null);
+  const [editText, setEditText] = useState("");
 
   // Custom color palette (matching Timer)
   const COLORS = {
@@ -40,6 +43,32 @@ function TodoList() {
     deleteTodo(id);
   };
 
+  const handleEditClick = (id, currentText) => {
+    setEditingId(id);
+    setEditText(currentText);
+  };
+
+  const handleSaveEdit = () => {
+    if (editText.trim()) {
+      editTodo(editingId, editText);
+      setEditingId(null);
+      setEditText("");
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+    setEditText("");
+  };
+
+  const handleEditKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSaveEdit();
+    } else if (e.key === "Escape") {
+      handleCancelEdit();
+    }
+  };
+
   return (
     <div
       style={{
@@ -54,6 +83,13 @@ function TodoList() {
         color: "var(--text-primary)",
       }}
     >
+      <style>
+        {`
+          button:focus {
+            outline: none !important;
+          }
+        `}
+      </style>
       {/* Header */}
       <div
         className="text-center mb-4"
@@ -246,16 +282,125 @@ function TodoList() {
                           accentColor: COLORS.blue,
                         }}
                       />
-                      <span
-                        style={{
-                          flex: 1,
-                          color: "var(--text-primary)",
-                          fontWeight: "500",
-                          fontSize: "1.2rem",
-                        }}
-                      >
-                        {todo.text}
-                      </span>
+                      {editingId === todo.id ? (
+                        <input
+                          type="text"
+                          value={editText}
+                          onChange={(e) => setEditText(e.target.value)}
+                          onKeyDown={handleEditKeyPress}
+                          style={{
+                            flex: 1,
+                            padding: "8px 12px",
+                            fontSize: "1.1rem",
+                            border: "2px solid var(--accent-blue)",
+                            borderRadius: "8px",
+                            outline: "none",
+                            fontWeight: "500",
+                            color: "var(--text-primary)",
+                            background: "var(--input-focus)",
+                          }}
+                          autoFocus
+                        />
+                      ) : (
+                        <span
+                          style={{
+                            flex: 1,
+                            color: "var(--text-primary)",
+                            fontWeight: "500",
+                            fontSize: "1.2rem",
+                          }}
+                        >
+                          {todo.text}
+                        </span>
+                      )}
+                      {editingId === todo.id ? (
+                        <>
+                          <button
+                            onClick={handleSaveEdit}
+                            aria-label="Save edit"
+                            style={{
+                              width: "32px",
+                              height: "32px",
+                              border: "none",
+                              borderRadius: "8px",
+                              background: COLORS.blue,
+                              color: "white",
+                              fontSize: "1.1rem",
+                              cursor: "pointer",
+                              transition: "all 0.2s ease",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                            onMouseEnter={(e) => {
+                              e.target.style.background = "#0066cc";
+                            }}
+                            onMouseLeave={(e) => {
+                              e.target.style.background = COLORS.blue;
+                            }}
+                          >
+                            <FiCheck />
+                          </button>
+                          <button
+                            onClick={handleCancelEdit}
+                            aria-label="Cancel edit"
+                            style={{
+                              width: "32px",
+                              height: "32px",
+                              border: "none",
+                              borderRadius: "8px",
+                              background: "var(--input-bg)",
+                              color: COLORS.red,
+                              fontSize: "1.1rem",
+                              cursor: "pointer",
+                              transition: "all 0.2s ease",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                            onMouseEnter={(e) => {
+                              e.target.style.background = COLORS.red;
+                              e.target.style.color = "white";
+                            }}
+                            onMouseLeave={(e) => {
+                              e.target.style.background = "var(--input-bg)";
+                              e.target.style.color = COLORS.red;
+                            }}
+                          >
+                            <FiX />
+                          </button>
+                        </>
+                      ) : (
+                        <button
+                          onClick={() => handleEditClick(todo.id, todo.text)}
+                          aria-label="Edit todo"
+                          style={{
+                            width: "32px",
+                            height: "32px",
+                            border: "none",
+                            borderRadius: "8px",
+                            background: "var(--input-bg)",
+                            color: "var(--text-muted)",
+                            fontSize: "1.1rem",
+                            cursor: "pointer",
+                            transition: "all 0.2s ease",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            outline: "none",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.target.style.background = "var(--text-muted)";
+                            e.target.style.color = "var(--card-bg)";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.target.style.background = "var(--input-bg)";
+                            e.target.style.color = "var(--text-muted)";
+                          }}
+                        >
+                          <FiEdit2 />
+                        </button>
+                      )}
                       <button
                         onClick={() => handleDeleteTodo(todo.id)}
                         aria-label="Delete todo"
@@ -331,17 +476,126 @@ function TodoList() {
                           accentColor: COLORS.blue,
                         }}
                       />
-                      <span
-                        style={{
-                          flex: 1,
-                          textDecoration: "line-through",
-                          color: "var(--text-secondary)",
-                          fontWeight: "400",
-                          fontSize: "1.05rem",
-                        }}
-                      >
-                        {todo.text}
-                      </span>
+                      {editingId === todo.id ? (
+                        <input
+                          type="text"
+                          value={editText}
+                          onChange={(e) => setEditText(e.target.value)}
+                          onKeyDown={handleEditKeyPress}
+                          style={{
+                            flex: 1,
+                            padding: "8px 12px",
+                            fontSize: "1.05rem",
+                            border: "2px solid var(--accent-blue)",
+                            borderRadius: "8px",
+                            outline: "none",
+                            fontWeight: "400",
+                            color: "var(--text-secondary)",
+                            background: "var(--input-focus)",
+                          }}
+                          autoFocus
+                        />
+                      ) : (
+                        <span
+                          style={{
+                            flex: 1,
+                            textDecoration: "line-through",
+                            color: "var(--text-secondary)",
+                            fontWeight: "400",
+                            fontSize: "1.05rem",
+                          }}
+                        >
+                          {todo.text}
+                        </span>
+                      )}
+                      {editingId === todo.id ? (
+                        <>
+                          <button
+                            onClick={handleSaveEdit}
+                            aria-label="Save edit"
+                            style={{
+                              width: "32px",
+                              height: "32px",
+                              border: "none",
+                              borderRadius: "8px",
+                              background: COLORS.blue,
+                              color: "white",
+                              fontSize: "1.1rem",
+                              cursor: "pointer",
+                              transition: "all 0.2s ease",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                            onMouseEnter={(e) => {
+                              e.target.style.background = "#0066cc";
+                            }}
+                            onMouseLeave={(e) => {
+                              e.target.style.background = COLORS.blue;
+                            }}
+                          >
+                            <FiCheck />
+                          </button>
+                          <button
+                            onClick={handleCancelEdit}
+                            aria-label="Cancel edit"
+                            style={{
+                              width: "32px",
+                              height: "32px",
+                              border: "none",
+                              borderRadius: "8px",
+                              background: "var(--input-bg)",
+                              color: COLORS.red,
+                              fontSize: "1.1rem",
+                              cursor: "pointer",
+                              transition: "all 0.2s ease",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                            onMouseEnter={(e) => {
+                              e.target.style.background = COLORS.red;
+                              e.target.style.color = "white";
+                            }}
+                            onMouseLeave={(e) => {
+                              e.target.style.background = "var(--input-bg)";
+                              e.target.style.color = COLORS.red;
+                            }}
+                          >
+                            <FiX />
+                          </button>
+                        </>
+                      ) : (
+                        <button
+                          onClick={() => handleEditClick(todo.id, todo.text)}
+                          aria-label="Edit todo"
+                          style={{
+                            width: "32px",
+                            height: "32px",
+                            border: "none",
+                            borderRadius: "8px",
+                            background: "var(--input-bg)",
+                            color: "var(--text-muted)",
+                            fontSize: "1.1rem",
+                            cursor: "pointer",
+                            transition: "all 0.2s ease",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            outline: "none",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.target.style.background = "var(--text-muted)";
+                            e.target.style.color = "var(--card-bg)";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.target.style.background = "var(--input-bg)";
+                            e.target.style.color = "var(--text-muted)";
+                          }}
+                        >
+                          <FiEdit2 />
+                        </button>
+                      )}
                       <button
                         onClick={() => handleDeleteTodo(todo.id)}
                         aria-label="Delete todo"
