@@ -65,7 +65,7 @@ function TimerPage() {
                     fontSize: "0.75rem",
                     fontWeight: "600",
                     padding: "6px 12px",
-                    background: "var(--accent-blue, #2563EB)",
+                    background: "#1e40af",
                     border: "none",
                     borderRadius: "8px",
                     color: "#fff",
@@ -74,11 +74,13 @@ function TimerPage() {
                   }}
                   onMouseEnter={(e) => {
                     e.target.style.transform = "translateY(-1px)";
+                    e.target.style.background = "#1e3a8a";
                     e.target.style.boxShadow =
-                      "0 4px 12px rgba(37, 99, 235, 0.4)";
+                      "0 4px 12px rgba(30, 64, 175, 0.4)";
                   }}
                   onMouseLeave={(e) => {
                     e.target.style.transform = "translateY(0)";
+                    e.target.style.background = "#1e40af";
                     e.target.style.boxShadow = "none";
                   }}
                 >

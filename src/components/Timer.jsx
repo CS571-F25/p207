@@ -45,8 +45,8 @@ function Timer({ compact = false, showHero = false, onTimerComplete = null }) {
    * @returns {string} Hex color code
    */
   const getTimerColor = () => {
-    // Use lighter color in dark mode for visibility
-    return isDarkMode ? "#CBD5E1" : "#64748B"; // Consistent neutral gray for all timers
+    // Use much lighter color in dark mode for better visibility and contrast
+    return isDarkMode ? "#E5E7EB" : "#64748B"; // Light gray in dark mode, neutral gray in light mode
   };
 
   const getButtonBackground = () => {
@@ -102,7 +102,7 @@ function Timer({ compact = false, showHero = false, onTimerComplete = null }) {
   };
 
   const getTimerDisplayColor = () => {
-    return isDarkMode ? "#f0f6fc" : "#1E293B";
+    return isDarkMode ? "#FFFFFF" : "#0F172A";
   };
 
   /**
@@ -354,13 +354,13 @@ function Timer({ compact = false, showHero = false, onTimerComplete = null }) {
             >
               {String(hours).padStart(2, "0")}
               <span
-                style={{ opacity: 0.3, margin: "0 3px", fontWeight: "400" }}
+                style={{ opacity: 0.6, margin: "0 3px", fontWeight: "400" }}
               >
                 :
               </span>
               {String(minutes).padStart(2, "0")}
               <span
-                style={{ opacity: 0.3, margin: "0 3px", fontWeight: "400" }}
+                style={{ opacity: 0.6, margin: "0 3px", fontWeight: "400" }}
               >
                 :
               </span>
