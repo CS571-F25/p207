@@ -68,9 +68,19 @@ export function TodoProvider({ children }) {
 
   const toggleTodo = useCallback((id) => {
     setTodos((prev) =>
-      prev.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
+      prev.map((todo) => {
+        if (todo.id === id) {
+          const newCompleted = !todo.completed;
+          // If marking as completed, set completedAt timestamp
+          // If unmarking, remove completedAt
+          return {
+            ...todo,
+            completed: newCompleted,
+            completedAt: newCompleted ? Date.now() : undefined,
+          };
+        }
+        return todo;
+      })
     );
   }, []);
 
@@ -87,6 +97,36 @@ export function TodoProvider({ children }) {
       );
     }
   }, []);
+
+  // Auto-delete completed tasks after 20 minutes
+  useEffect(() => {
+    const timers = [];
+    const now = Date.now();
+    const DELETE_DELAY = 1 * 60 * 1000; // 1 minutes in milliseconds
+
+    todos.forEach((todo) => {
+      if (todo.completed && todo.completedAt) {
+        const timeElapsed = now - todo.completedAt;
+        const timeRemaining = DELETE_DELAY - timeElapsed;
+
+        if (timeRemaining <= 0) {
+          // Already past the delete time, delete immediately
+          deleteTodo(todo.id);
+        } else {
+          // Schedule deletion for the remaining time
+          const timer = setTimeout(() => {
+            deleteTodo(todo.id);
+          }, timeRemaining);
+          timers.push(timer);
+        }
+      }
+    });
+
+    // Cleanup function to clear all timers
+    return () => {
+      timers.forEach((timer) => clearTimeout(timer));
+    };
+  }, [todos, deleteTodo]);
 
   // Derived state
   const activeTodos = todos.filter((t) => !t.completed);
