@@ -202,28 +202,28 @@
 }
 
 .start-timer-btn {
-  background: #3b82f6;
+  background: #2563eb;
   color: #ffffff;
 }
 
 .start-timer-btn:hover {
-  opacity: 0.9;
+  background: #1d4ed8;
 }
 
 .view-tasks-btn {
   background: #ffffff;
-  color: #3b82f6;
-  border: 1px solid #3b82f6;
+  color: #1e40af;
+  border: 2px solid #1e40af;
 }
 
 .view-tasks-btn:hover {
-  opacity: 0.9;
+  background: #eff6ff;
 }
 
 [data-theme="dark"] .view-tasks-btn {
   background: #292524;
-  color: #60a5fa;
-  border-color: #3b82f6;
+  color: #93c5fd;
+  border-color: #93c5fd;
 }
 
 /* Hero subtitle */
@@ -284,7 +284,7 @@
 }
 
 [data-theme="dark"] .timer-min-label {
-  color: #c9d1d9 !important;
+  color: #e2e8f0 !important;
 }
 
 /* Timer presets label styling */
@@ -293,7 +293,7 @@
 }
 
 [data-theme="dark"] .timer-presets-label {
-  color: #8b949e !important;
+  color: #cbd5e1 !important;
 }
 
 .form-control:focus {

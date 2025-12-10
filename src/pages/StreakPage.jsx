@@ -268,7 +268,7 @@ function StreakPage() {
                   key={day}
                   style={{
                     height: `${cellSize}px`,
-                    fontSize: "9px",
+                    fontSize: "11px",
                     color: "var(--text-muted)",
                     display: i % 2 === 1 ? "flex" : "none", // Show Mon, Wed, Fri
                     alignItems: "center",
@@ -298,7 +298,7 @@ function StreakPage() {
                     style={{
                       position: "absolute",
                       left: `${weekIndex * (cellSize + cellGap)}px`,
-                      fontSize: "9px",
+                      fontSize: "11px",
                       color: "var(--text-muted)",
                     }}
                   >
@@ -360,7 +360,7 @@ function StreakPage() {
               justifyContent: "flex-end",
               gap: "4px",
               marginTop: "1rem",
-              fontSize: "10px",
+              fontSize: "11px",
               color: "var(--text-muted)",
             }}
           >

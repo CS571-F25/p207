@@ -65,7 +65,7 @@ function TimerPage() {
                     fontSize: "0.75rem",
                     fontWeight: "600",
                     padding: "6px 12px",
-                    background: "var(--accent-blue, #60A5FA)",
+                    background: "var(--accent-blue, #2563EB)",
                     border: "none",
                     borderRadius: "8px",
                     color: "#fff",
@@ -75,7 +75,7 @@ function TimerPage() {
                   onMouseEnter={(e) => {
                     e.target.style.transform = "translateY(-1px)";
                     e.target.style.boxShadow =
-                      "0 4px 12px rgba(96, 165, 250, 0.4)";
+                      "0 4px 12px rgba(37, 99, 235, 0.4)";
                   }}
                   onMouseLeave={(e) => {
                     e.target.style.transform = "translateY(0)";

@@ -50,11 +50,11 @@ function Timer({ compact = false, showHero = false, onTimerComplete = null }) {
   };
 
   const getButtonBackground = () => {
-    return isDarkMode ? "#64748B" : "#60A5FA"; // Muted gray in dark mode, blue in light mode
+    return isDarkMode ? "#475569" : "#2563EB"; // Lighter gray in dark mode, darker blue in light mode for better contrast
   };
 
   const getButtonHoverBackground = () => {
-    return isDarkMode ? "#475569" : "#3B82F6"; // Darker gray in dark mode, darker blue in light mode
+    return isDarkMode ? "#334155" : "#1D4ED8"; // Even lighter gray in dark mode, even darker blue in light mode
   };
 
   const getButtonShadow = () => {
@@ -70,7 +70,7 @@ function Timer({ compact = false, showHero = false, onTimerComplete = null }) {
   };
 
   const getPresetBackground = () => {
-    return isDarkMode ? "#64748B" : "#F1F5F9";
+    return isDarkMode ? "#475569" : "#F1F5F9";
   };
 
   const getPresetBorder = () => {
@@ -82,7 +82,7 @@ function Timer({ compact = false, showHero = false, onTimerComplete = null }) {
   };
 
   const getPresetHoverBackground = () => {
-    return isDarkMode ? "#475569" : "#E2E8F0";
+    return isDarkMode ? "#334155" : "#E2E8F0";
   };
 
   const getPresetShadow = () => {
@@ -707,7 +707,7 @@ function Timer({ compact = false, showHero = false, onTimerComplete = null }) {
                   key={time}
                   onClick={() => setTime(0, time, 0)}
                   style={{
-                    fontSize: "0.75rem",
+                    fontSize: "0.95rem",
                     fontWeight: "700",
                     borderRadius: "12px",
                     flex: 1,
@@ -734,12 +734,12 @@ function Timer({ compact = false, showHero = false, onTimerComplete = null }) {
                     e.target.style.boxShadow = getPresetShadow();
                   }}
                 >
-                  <span style={{ fontSize: "0.85rem", fontWeight: "800" }}>
+                  <span style={{ fontSize: "1.05rem", fontWeight: "800" }}>
                     {time}m
                   </span>
                   <span
                     style={{
-                      fontSize: "0.65rem",
+                      fontSize: "0.85rem",
                       opacity: 0.9,
                       textTransform: "uppercase",
                       letterSpacing: "0.5px",
